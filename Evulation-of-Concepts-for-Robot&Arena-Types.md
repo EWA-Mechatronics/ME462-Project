@@ -100,12 +100,14 @@ The possible solutions for this part are:
 
 Since there is no alternative solution to image capture tool, decision matrice for image capture tool will not be created.
 
-  ### d. Charging of Robots
+  ### d. Power Supply For Robots
 
 The possible solutions for this part are:
 * Changeable Battery
 * Laser-beam
 * Magnetic Resonance Coupling
+* Physical Contact Charge
+* Mesh at Top
   
 Criterias and their corresponding weight factors are given in the following Chart 5.
 
@@ -127,16 +129,16 @@ Total | C3 = 1
 
 The Hierarchical Objective Tree for this part is available in Chart 6.
 
-###### Charging of Robots
-Criteria | Weight Factor | Changeable Battery | Laser-beam | MR Coupling
--------- | --------- | -------- | --------- | ---------
-||| Score / Rating  | Score / Rating  | Score / Rating 
-Cost | 0.1 | 4 / 0.4 | 0 / 0 | 4 / 0.4
-Stability |  0.1 | 5 / 0.5 | 2 / 0.2 | 5 / 0.5
-Size | 0.3 | 0 / 0 | 4 / 1.2 | 5 / 1.5
-Resource Accessibility | 0.1 | 5 / 0.5 | 1 / 0.1 | 4 / 0.4
-Feasibility | 0.4 | 5 / 2 | 1 / 0.4 | 5 / 2
-Total | 1 | 3.4 | 2.3 | 4.8
+###### Power Supply of Robots
+Criteria | Weight Factor | Changeable Battery | Laser-beam | MR Coupling | Physical Contact Charge | Mesh at Top
+-------- | --------- | -------- | --------- | --------- | --------- | ---------
+||| Score / Rating  | Score / Rating  | Score / Rating | Score / Rating | Score / Rating 
+Cost | 0.1 | 4 / 0.4 | 0 / 0 | 4 / 0.4 | 5 / 0.5 | 4 / 0.4
+Stability |  0.1 | 5 / 0.5 | 2 / 0.2 | 5 / 0.5 | 5 / 0.5 | 1 / 0.1
+Size | 0.3 | 0 / 0 | 4 / 1.2 | 5 / 1.5 | 3 / 0.9 | 5 / 1.5
+Resource Accessibility | 0.1 | 5 / 0.5 | 1 / 0.1 | 4 / 0.4 | 5 / 0.5 | 4 / 0.4
+Feasibility | 0.4 | 5 / 2 | 1 / 0.4 | 3 / 1.2 | 5 / 2 | 4 / 1.6
+Total | 1 | 3.4 | 2.3 | 4 | 4.4| 4
 ###### Chart 6
 
   ### e. Physical Arena Type
