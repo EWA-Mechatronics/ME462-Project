@@ -148,7 +148,7 @@ The possible solutions for this part are:
 * Ground (Cathode)
 * Conveyor
 * Monitor
-* Imaginary Area
+* Grid Plate
 
 Criterias and their corresponding weight factors are given in the following Chart 7.
 
@@ -171,7 +171,7 @@ Total | C4 = 1
 The Hierarchical Objective Tree for this part is available in Chart 8.
 
 ###### Physical Arena Type
-Criteria | Weight Factor | Frictionless Area | Ground | Conveyor | Monitor | Imaginary Area
+Criteria | Weight Factor | Frictionless Area | Ground | Conveyor | Monitor | Grid Plate
 -------- | --------- | -------- | --------- | --------- |--------- | ----------
 ||| Score / Rating  | Score / Rating  | Score / Rating | Score / Rating | Score / Rating
 Cost | 0.4 | 3 / 1.2 | 3 / 1.2 | 1 / 0.4 | 1 / 0.4 | 5 / 2
@@ -182,4 +182,14 @@ Weight | 0.1 | 4 / 0.4 | 5 / 0.5 | 0 / 0 | 3 / 0.3 | 5 / 0.5
 Total | 1 | 2.8 | 4.1 | 2.1 | 2.6 | 5
 ###### Chart 8
 
+# Determination of Best Concept
 
+The best concept includes the following solutions: 
+
+* Imaginary Arena
+* Classical Robot
+* Camera
+* Physical Contact Charge 
+* Grid Plate
+
+Basicly at the best concept, a grid plate will be built. Classical robots will be manufactured with a	minimalist design. For the power supply of robots a physical contact area will be built. Camera will capture the image of the grid plate and robots to solve initializing problems. Finally, scenario will be reflected in the software. 
