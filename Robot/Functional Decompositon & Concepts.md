@@ -36,7 +36,7 @@
     3. Buzzer
 
 
-**Morphological Chart**
+**Concepts**
 
 | **Functions / Solutions** | 1 | 2 | 3 | 4 |
 | --- | :---: | :---: | :---: | :---: |
