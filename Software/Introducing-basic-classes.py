@@ -120,6 +120,7 @@ class Random_Actuation(ABC):
         self.speed_multiplier = speed_multiplier
         self.depth_of_view_multiplier = depth_of_view_multiplier
         self.view_angle_multiplier = view_angle_multiplier
+        self.type = "Random Actuation" # Specify the object type
         
     def myopic(self,robot,depth_of_view_multiplier,possibility):
         """
@@ -198,6 +199,7 @@ class Sensors(ABC):
     """
     def __init__(self,name):
         self.name = name
+        self.type = "Sensor" # Specify the object type
 
     @abstractmethod  # Create an abstract method to prevent the creation of objects of ABC
     def abstract_method(self):
@@ -222,6 +224,7 @@ class Scenario(ABC):
     """
     def __init__(self,name):
         self.name = name
+        self.type = "Scenario" # Specify the object type
 
     @abstractmethod  # Create an abstract method to prevent the creation of objects of ABC
     def abstract_method(self):
