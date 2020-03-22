@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod # We will use Abstract Base Classes for some of our classes.
 import random #For random actuations 
+import math  #For finding distance between robots 
 
 class Robot(ABC):
     """
@@ -225,21 +226,53 @@ class Scenario(ABC):
     """
     Main class for the scenarios
     """
-    def __init__(self,name):
+    def __init__(self,name,threshold):
         self.name = name
         self.type = "Scenario" # Specify the object type
+        self.threshold = threshold # Define specific threshold value for scenarios
 
+    def win_condition(self, target, robot):
+        dist = math.sqrt((target.position[0]-robot.position[0])**2
+                         + (target.position[1]-robot.position[1])**2)
+        
+        # Calculate distance and compare it with specified threshold
+        if dist < self.threshold:
+            global Robot_win
+            Robot_win = True #Define a flag to figure out if prey has won or not
+            print("{0} has won!".format(robot.name))
+        else:
+            Robot_win = False #If flag still 'False' after specified time 
+                                 #Prey will lost.
+            
     @abstractmethod  # Create an abstract method to prevent the creation of objects of ABC
     def abstract_method(self):
         pass
 
 class Prey_Predator(Scenario):
     """
-    Prey & Predator game scenario.  This game can be played with 2 types of 
-    robots. Prey is the Deer and the Predator is the Lion.
+    Prey & Predator game scenario.  If one of the Predator got its Prey then
+    it wins the game.
     """        
-    def __init__(self):
-        super().__init__("Prey&Predator")
+    def __init__(self,prey,predator,threshold):
+        super().__init__("Prey&Predator", threshold)
+        self.win_condition(prey,predator)
+        
         
     def abstract_method(self): # Override abstractmethod to provide creation of objects
         pass   
+
+class Search_Rescue(Scenario):
+    """
+    Search & Rescue game scenario. All robots in the arena should find disabled robots
+    in the arena. If one robot find a disabled robot, that disabled robot will join its team.
+    At the end of the specified time. Largest group will win.
+    """
+    def __init__(self,searcher,disabled_robot,threshold):
+        super().__init__("Search & Rescue", threshold)
+        self.win_condition(searcher,disabled_robot)
+        
+        if Robot_win:
+            disabled_robot.name = searcher.name
+        else:
+            pass
+        
