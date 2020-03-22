@@ -10,7 +10,7 @@ class Robot(ABC):
     At the scenarios every event will affact the properties of the robots. Thus, 
     we will build proper interfaces at robots in order to easy use at events.
     """
-    def __init__(self,name,speed,depth_of_view,view_angle):
+    def __init__(self,name,speed,depth_of_view,view_angle,position = ""):
         """
         Specify the name, speed and the line of sight for the robots.
         """
@@ -19,6 +19,7 @@ class Robot(ABC):
         self.depth_of_view = depth_of_view # That will the instantenous depth of view of the robot
         self.view_angle = view_angle # That will the instantenous view angle of the robot
         self.type = "Robot"   #Specift the object type
+        self.position = position # store the position of the robot
 
     @abstractmethod  # Create an abstract method to prevent the creation of objects of ABC
     def abstract_method(self):
@@ -38,7 +39,8 @@ class Lion(Robot):
     lion_base_view_angle = 40
     
     def __init__(self):
-        super().__init__("Lion",lion_base_speed,lion_base_depth_of_view,lion_base_view_angle) # Create instantenous stats for lion
+        super().__init__("Lion",lion_base_speed,lion_base_depth_of_view,lion_base_view_angle,position = "") 
+        # Create instantenous stats for lion
         self.base_speed = lion_base_speed # That will store the base speed of the lion
         self.base_depth_of_view = lion_base_depth_of_view # That will store the base depth of view
         self.base_view_angle = lion_base_view_angle # That will store the base view angle
@@ -60,7 +62,8 @@ class Deer(Robot):
     deer_base_view_angle = 60
      
     def __init__(self):
-        super().__init__("Deer",deer_base_speed,deer_base_depth_of_view,deer_base_view_angle) # Create instantenous stats of deer
+        super().__init__("Deer",deer_base_speed,deer_base_depth_of_view,deer_base_view_angle,position = "")
+        # Create instantenous stats of deer
         self.base_speed = deer_base_speed # That will store the instantenous speed of the Deer
         self.base_depth_of_view = deer_base_depth_of_view # That will store the instantenous depth of view
         self.base_view_angle = deer_base_view_angle # That will store the instantenous view angle        
