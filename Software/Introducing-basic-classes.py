@@ -11,6 +11,7 @@ class Robot(ABC):
     At the scenarios every event will affact the properties of the robots. Thus, 
     we will build proper interfaces at robots in order to easy use at events.
     """
+    
     def __init__(self,name,speed,depth_of_view,view_angle,position = ""):
         """
         Specify the name, speed and the line of sight for the robots.
@@ -38,6 +39,8 @@ class Lion(Robot):
     lion_base_speed = 5              #Define default values of lion
     lion_base_depth_of_view = 5
     lion_base_view_angle = 40
+
+    lion_number = 0
     
     def __init__(self):
         super().__init__("Lion",lion_base_speed,lion_base_depth_of_view,lion_base_view_angle,position = "") 
@@ -45,7 +48,14 @@ class Lion(Robot):
         self.base_speed = lion_base_speed # That will store the base speed of the lion
         self.base_depth_of_view = lion_base_depth_of_view # That will store the base depth of view
         self.base_view_angle = lion_base_view_angle # That will store the base view angle
-    
+        Lion.lion_number += 1
+        self.name = "Lion{0}".format(self.lion_number)
+        print("Total number of Lions is {0}.".format(Lion.lion_number))
+        
+    def __del__(self):
+        Lion.lion_number -=1
+        print("Total number of Lions is {0}.".format(Lion.lion_number))
+        
     def abstract_method(self): # Override abstractmethod to provide creation of objects
         pass
 
@@ -61,16 +71,25 @@ class Deer(Robot):
     deer_base_speed = 5              #Define base values of deer
     deer_base_depth_of_view = 4
     deer_base_view_angle = 60
+    
+    deer_number = 0
      
     def __init__(self):
-        super().__init__("Deer",deer_base_speed,deer_base_depth_of_view,deer_base_view_angle,position = "")
+        super().__init__("Deer",deer_base_speed,deer_base_depth_of_view,deer_base_view_angle,position = "") 
         # Create instantenous stats of deer
         self.base_speed = deer_base_speed # That will store the instantenous speed of the Deer
         self.base_depth_of_view = deer_base_depth_of_view # That will store the instantenous depth of view
         self.base_view_angle = deer_base_view_angle # That will store the instantenous view angle        
+        Deer.deer_number += 1
+        self.name = "Deer{0}".format(Deer.deer_number)
+        print("Total number of Deers is {0}.".format(Deer.deer_number))
 
     def abstract_method(self): # Override abstractmethod to provide creation of objects
         pass
+     
+    def __del__(self):
+        Deer.deer_number -=1
+        print("Total number of Deers is {0}.".format(Deer.deer_number))
         
 class Grid(ABC):
     """
@@ -124,9 +143,9 @@ class Random_Actuation(ABC):
         self.speed_multiplier = speed_multiplier
         self.depth_of_view_multiplier = depth_of_view_multiplier
         self.view_angle_multiplier = view_angle_multiplier
-        self.type = "Random Actuation" # Specify the object type
+        self.type = "Random Actuation"
         
-    def myopic(self,robot,depth_of_view_multiplier,possibility):
+    def myopic(actuation_name,robot,depth_of_view_multiplier,possibility):
         """
         For the actuations that will affect the depth of view.
         """
@@ -134,12 +153,13 @@ class Random_Actuation(ABC):
         
         if goodluck < possibility:
             robot.depth_of_view = robot.depth_of_view * depth_of_view_multiplier
-            print("You shall not pass!")
+            print("{0} is affected by {2}. Its depth of view multiplied by {1}!".format(robot.name,depth_of_view_multiplier,actuation_name))
+            return robot
         else:
-            print("You shall pass!")
-            pass
+            print("{1} effect is not succesful on {0}!".format(robot.name,actuation_name))
+            return robot
     
-    def hobbler(self,robot,speed,speed_multiplier,possibility): 
+    def hobbler(actuation_name,robot,speed_multiplier,possibility): 
         """
         For the actuations that will affect the speed.
         """
@@ -147,54 +167,55 @@ class Random_Actuation(ABC):
         
         if goodluck < possibility:
             robot.speed = robot.speed * speed_multiplier
-            print("You shall not pass!")
+            print("{0} is affected by {2}. Its speed multiplied by {1}!".format(robot.name,speed_multiplier,actuation_name))
+            return robot
         else:
-            print("You shall pass!")
-            pass
+            print("{1} effect is not succesful on {0}!".format(robot.name,actuation_name))
+            return robot
 
-    def surgery(self,a,b,possibility):
+    def surgery(actuation_name,exposed_robot,transform_robot,possibility):
         """
         For the actuations that will affact the name of the robot.
         A change in the name will also affect all other properties.
         """
         goodluck = random.randint(0,100)
         
-        if goodluck < possibility: # Surgery will transform a to b with base stats of b.
-            a.name = b.name
-            a.speed = b.base_speed
-            a.view_angle = b.base_view_angle
-            a.depth_of_view = b.base_depth_of_view
-            print("You shall not pass!")
+        if goodluck < possibility: # Surgery will transform exposed_robot to transform_robot with base stats of transform_robot.
+            old_name = exposed_robot.name #Store the old name of exposed_robot
+            exposed_robot = transform_robot.__class__() 
+            print("{0} is affected by {2}. It's name is now {1}!".format(old_name,exposed_robot.name,actuation_name))
+            return exposed_robot
         else:
-            print("You shall pass!")
-            pass
+            print("{1} is not succesful on {0}!".format(exposed_robot.name,actuation_name))
+            return exposed_robot
      
     @abstractmethod  # Create an abstract method to prevent the creation of objects of ABC
     def abstract_method(self):
         pass
     
-class Thunder(Random_Actuation):
+def Thunder(robot):
     """
-    Zeus is that you ?
+    Basic Random Actuation method that affects the speed and the depth of view.
+    
+    Ex: 
+        a = Deer()
+        a = Thunder(a)
     """
-    def __init__(self,robot):
-        super().__init__("Thunder")
-        self.myopic(robot,0.5,20) # with a %20 chance myopic will be triggered
-        self.hobbler(robot,0.5,20) # with a %20 change hobbler will be triggered
-     
-    def abstract_method(self): # Override abstractmethod to provide creation of objects
-        pass
+    robot_return = Random_Actuation.myopic("Thunder",robot,0.5,20)  # with a %20 chance myopic will be triggered
+    robot_return = Random_Actuation.hobbler("Thunder",robot,0.5,20) # with a %20 change hobbler will be triggered
+    return robot_return
 
-class Rainbow(Random_Actuation):
+def Transformer(robot1,robot2):
     """
-    Maybe you can see Freddie.
-    """
-    def __init__(self,robot1,robot2):
-        super().__init__("Rainbow")
-        self.surgery(robot1,robot2,20)  #with a %20 change surgery will be triggered
-     
-    def abstract_method(self): # Override abstractmethod to provide creation of objects
-        pass
+    Basic Random Actuation method that affects the name of the robot.
+    
+    Ex:
+        a = Deer()
+        b = Lion()
+        a = Rainbow(a,b)
+    """ 
+    #with a 50% change surgery will be triggered
+    return Random_Actuation.surgery("Transformer",robot1,robot2,50)
   
 class Sensors(ABC):
     """
@@ -257,7 +278,6 @@ class Prey_Predator(Scenario):
         super().__init__("Prey&Predator", threshold)
         self.win_condition(prey,predator)
         
-        
     def abstract_method(self): # Override abstractmethod to provide creation of objects
         pass   
 
@@ -275,4 +295,3 @@ class Search_Rescue(Scenario):
             disabled_robot.name = searcher.name
         else:
             pass
-        
