@@ -241,23 +241,38 @@ class Sensors(ABC):
     def __init__(self,name):
         self.name = name
         self.type = "Sensor" # Specify the object type
+        self.kind = name
 
     @abstractmethod  # Create an abstract method to prevent the creation of objects of ABC
     def abstract_method(self):
         pass
 
-class Distance_sensor(Sensors):
+class Distance_Sensor(Sensors):
     """
     Distance sensor.
     """
-    def _init(self):
-        super().__init__("DistanceSensor")
+    def __init__(self):
+        super().__init__("Distance Sensor")
 
     def GetValue(self):
         pass
 
     def abstract_method(self): # Override abstractmethod to provide creation of objects
         pass    
+
+class Position_Sensor(Sensors):
+    """
+    Position sensor.
+    """
+    def __init__(self):
+        super().__init__("Position Sensor")
+
+    def GetValue(self):
+        pass
+
+    def abstract_method(self): # Override abstractmethod to provide creation of objects
+        pass    
+
 
 class Scenario(ABC):
     """
@@ -288,8 +303,7 @@ class Scenario(ABC):
 
 class Prey_and_Predator(Scenario):
     """
-    Prey & Predator game scenario.  If one of the Predator got its Prey then
-    it wins the game.
+    Prey & Predator game scenario.  If one of the Predator got its Prey then it wins the game.
     """        
     def __init__(self):
         super().__init__("Prey and Predator", threshold = "1")
