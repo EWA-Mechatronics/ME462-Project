@@ -3,6 +3,8 @@
 from abc import ABC, abstractmethod # We will use Abstract Base Classes for some of our classes.
 import random #For random actuations 
 import math  #For finding distance between robots 
+import sys #Use sys module to convert strings to corresponding Classes
+import numpy as np #Import Numpy for using matrices.
 
 class Robot(ABC):
     """
@@ -24,7 +26,8 @@ class Robot(ABC):
         self.view_angle = view_angle # That will the instantenous view angle of the robot
         self.type = "Robot"   #Specift the object type
         self.position = position # store the position of the robot
-
+        self.kind = name #Store its kind to give the GUI
+        
     @abstractmethod  # Create an abstract method to prevent the creation of objects of ABC
     def abstract_method(self):
         pass
@@ -104,11 +107,22 @@ class Grid(ABC):
         self.lion_speed = lion_speed 
         self.deer_speed = deer_speed
         self.type = "Grid" # Specify the object type
-
+        self.kind = name
     @abstractmethod  # Create an abstract method to prevent the creation of objects of ABC
     def abstract_method(self):
         pass
+
+class Obstacle(Grid):
+    """
+    Obstacle is a grid type.
+    It represents the areas which robots can not pass.
+    """
+    def __init__(self):
+        super().__init__("Obstacle",lion_speed = 0, deer_speed = 0)
     
+    def abstract_method(self): # Override abstractmethod to provide creation of objects
+        pass
+
 class Forest(Grid):
     """
     Forest is a grid type.
@@ -253,6 +267,7 @@ class Scenario(ABC):
         self.name = name
         self.type = "Scenario" # Specify the object type
         self.threshold = threshold # Define specific threshold value for scenarios
+        self.kind = name
 
     def win_condition(self, target, robot):
         dist = math.sqrt((target.position[0]-robot.position[0])**2
@@ -271,29 +286,53 @@ class Scenario(ABC):
     def abstract_method(self):
         pass
 
-class Prey_Predator(Scenario):
+class Prey_and_Predator(Scenario):
     """
     Prey & Predator game scenario.  If one of the Predator got its Prey then
     it wins the game.
     """        
-    def __init__(self,prey,predator,threshold):
-        super().__init__("Prey&Predator", threshold)
-        self.win_condition(prey,predator)
+    def __init__(self):
+        super().__init__("Prey and Predator", threshold = "1")
         
     def abstract_method(self): # Override abstractmethod to provide creation of objects
         pass   
 
-class Search_Rescue(Scenario):
+class Search_and_Rescue(Scenario):
     """
     Search & Rescue game scenario. All robots in the arena should find disabled robots
     in the arena. If one robot find a disabled robot, that disabled robot will join its team.
     At the end of the specified time. Largest group will win.
     """
-    def __init__(self,searcher,disabled_robot,threshold):
-        super().__init__("Search & Rescue", threshold)
-        self.win_condition(searcher,disabled_robot)
+    def __init__(self):
+        super().__init__("Search and Rescue", threshold = "1")
         
-        if Robot_win:
-            disabled_robot.name = searcher.name
-        else:
-            pass
+    def abstract_method(self): # Override abstractmethod to provide creation of objects
+        pass   
+
+def Subclass_finder(cls):
+    """
+    This function is to define all subclasses of some classes in order to 
+    define available subclasses to send to GUI
+    """
+
+    subclasses = [] # Create a list to deposit subclasses
+
+    for subclass in cls.__subclasses__():
+        subclasses.append(subclass)                     # Add founded subclass
+        subclasses.extend(Subclass_finder(subclass))    # Check if there is a subclass
+                                                        # of a subclass.
+
+    Output_types = [] # Create a list to deposit final strings
+    for i in range(len(subclasses)): 
+        instance = subclasses[i]() # Create an instance for the 
+        Output_types.append(instance.kind) # Add them to the output list
+        
+    return Output_types
+
+def str_to_class(referance_name):
+    """
+    This functions returns the corresponding class with the referanced 
+    parameter name.
+
+    """
+    return getattr(sys.modules[__name__], referance_name)
