@@ -5,12 +5,17 @@ import sys
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5.QtWidgets import QWidget
-from PyQt5.QtWidgets import QGridLayout
+from PyQt5.QtWidgets import QGridLayout, QCheckBox, QLabel
 from PyQt5.QtWidgets import QStatusBar, QToolBar, QRadioButton
 from PyQt5.QtWidgets import QPushButton, QGroupBox
 import time, threading
 from functools import partial # Import partial to use functions with partials
 import numpy as np #Import Numpy for using matrices.
+from PyQt5.QtCore import Qt
+
+text_to_show = 'Everything is Fine !'  #Initiate global variables
+desired_sensor_list = []
+desired_scenario = []
 
 class MainGui(QMainWindow):
     """
@@ -22,6 +27,7 @@ class MainGui(QMainWindow):
         self.robot_types = ra.Subclass_finder(ra.Robot)
         self.grid_types = ra.Subclass_finder(ra.Grid)
         self.scenario_types = ra.Subclass_finder(ra.Scenario)
+        self.sensor_types = ra.Subclass_finder(ra.Sensors)
         self.game_map = np.zeros(shape=(8,8),dtype = str) # Matrix of game map
         
         # Set some main window's properties
@@ -39,11 +45,13 @@ class MainGui(QMainWindow):
         self._centralWidget.setLayout(self.generalLayout)
         
         #Create Led Pins, Pot-Bar & Button Pins
-        self.generalLayout.addWidget(self._createButton(),4,0)
-        self.generalLayout.addWidget(self._createMap(), 3, 0)
+        self.generalLayout.addWidget(self._createButton(),5,0)
+        self.generalLayout.addWidget(self._createMap(), 4, 0)
         self.generalLayout.addWidget(self._createScenarioSelection(), 0, 0)
         self.generalLayout.addWidget(self._createRobotSelection(),1,0)
-        self.generalLayout.addWidget(self._createGridType(),2,0)
+        self.generalLayout.addWidget(self._createGridType(),3,0)
+        self.generalLayout.addWidget(self._createSensorSelection(),2,0,)
+        self.generalLayout.addWidget(self._createDisplay(), 6, 0)
         
     def _createMenu(self):
         '''
@@ -67,6 +75,28 @@ class MainGui(QMainWindow):
         status = QStatusBar()
         status.showMessage("This is the Status Bar.")
         self.setStatusBar(status)      
+        
+    def _createDisplay(self):
+        """
+        This function creates the display screen at Gui in order to give some 
+        information to the user.
+        """
+        global text_to_show
+        
+        # self.text_arduino_output = QLabel('The Data Coming From Arduino')
+        # self.pot_value = QLabel("Pot Value")
+        self.text = QLabel(text_to_show)
+        groupBox5 = QGroupBox('Display Screen')
+
+        text_layout = QGridLayout()
+        text_layout.addWidget(self.text,0,0)
+        # text_layout.addWidget(self.text_arduino_output, 1, 0)
+        # text_layout.addWidget(self.pot_value,2,0)
+        
+        groupBox5.setLayout(text_layout)
+        
+        return groupBox5    
+        
         
     def _createButton(self):
         """
@@ -93,6 +123,63 @@ class MainGui(QMainWindow):
     def _finishPressed(self):
         pass
     
+    def _createSensorSelection(self):
+        '''
+        This function creates radio buttons for scenario selection.
+        '''
+        self.sensor_box= {}                      #Create a list to create radio buttons
+        groupBox = QGroupBox("Scenario Selection")  #Create 'Scenario Selection' group box
+        radioLayout = QGridLayout()                 #The instance of a QGridLayout is created
+        row = 0
+        column = 0
+        
+        for Text in self.sensor_types:
+            self.sensor_box[Text] = QCheckBox(Text) #Create Radio Buttons
+            self.sensor_box[Text].setChecked(False)    #Set initialy not checked
+            self.sensor_box[Text].stateChanged.connect(partial(self._selectedSensors,Text)) #Define functions
+            self.sensor_box[Text].stateChanged.connect(partial(self._sensorExplainer,Text)) #Define functions            
+            radioLayout.addWidget(self.sensor_box[Text],row,column) #Add buttons to the radio Layout
+            column +=1 #Increase column number by 1 to set next buttons coordinates
+            if column == 5: # If column number is reached 5 pass to the next row
+                row += 1 
+                column = 0
+
+        groupBox.setLayout(radioLayout)             #Set the Layout of group box as radiolayout
+    
+        return groupBox
+    
+    def _selectedSensors(self,Text, state):
+        """
+        Returns the selected sensors to the manager.
+        
+        """
+        global desired_sensor_list
+        Text_editted = Text.replace(" ", "_")       
+        
+        if self.sensor_box[Text].isChecked() == True: #If the box is checked add sensor to the desired list
+            desired_sensor_list.append(Text_editted)
+        else: #If the box is not checked remove sensor from the desired list
+            desired_sensor_list.remove(Text_editted)
+
+        print("Active Sensors: ")
+        print(desired_sensor_list)        
+
+    def _sensorExplainer(self,Text):
+
+        """
+        When user pressed one of the grid buttons. This function will
+        print __doc__ of the corresponding Grid subclass.
+        """
+        global text_to_show
+        
+        if self.sensor_box[Text].isChecked() == True: #If the box is checked print to the display
+            Text_editted = Text.replace(" ", "_")
+            text_to_show = ra.str_to_class(Text_editted).__doc__
+            self.text.setText(text_to_show+"Now Activated.")
+        
+        else: #If the box is not checked print to the display
+            self.text.setText(Text + ". Now Deactivated.")           
+            
     def _createGridType(self):
         """
         This function creates grid type buttons at GUI to give user
@@ -100,7 +187,7 @@ class MainGui(QMainWindow):
         """
         self.grids_type_grid = {}                     #Create a list to create radio buttons
         groupBox = QGroupBox("Available Grid Types")  #Create 'Available Grid Types' group box
-        buttonLayout = QGridLayout()                   #The instance of a QGridLayout is created
+        buttonLayout = QGridLayout()                  #The instance of a QGridLayout is created
         row = 0
         column = 0
         
@@ -234,6 +321,25 @@ class MainGui(QMainWindow):
     
         return groupBox
 
+    def ScenarioSelection(self,Text):
+        """
+        Scenario radio buttons function.
+
+        """
+        self.scenario_grids[Text] = self.sender()    #We need to check if radio button is pressed or not
+        if  self.scenario_grids[Text].isChecked():   #Otherwise, it's sending 2 values one for itself and one for previous button
+            global desired_scenario
+            global text_to_show
+            
+            Text_editted = Text.replace(" ", "_")
+            text_to_show = ra.str_to_class(Text_editted).__doc__
+            self.text.setText(text_to_show+ Text +" is selecteed as scenario !")
+            desired_scenario.append(Text_editted)
+            if len(desired_scenario) == 2:
+                desired_scenario.pop(0)
+            print("Desired Scenario: ")
+            print(desired_scenario)
+            
     def _createRobotSelection(self):
         '''
         This function creates radio buttons for Robot Type selection.
@@ -281,17 +387,7 @@ class MainGui(QMainWindow):
         print("Game MAP :")
         print(self.game_map)
         
-    def ScenarioSelection(self,Text):
-        """
-        Scenario radio buttons function.
 
-        """
-        self.scenario_grids[Text] = self.sender()    #We need to check if radio button is pressed or not
-        if  self.scenario_grids[Text].isChecked():   #Otherwise, it's sending 2 values one for itself and one for previous button
-            global desired_scenario
-            desired_scenario = Text
-            print(desired_scenario)
-    
     def RobotSelection(self,Text):
         """
         Robot seleciton radio buttons function
@@ -309,3 +405,4 @@ if __name__ == "__main__":
     win = MainGui()
     win.show()
     sys.exit(app.exec_())
+    
