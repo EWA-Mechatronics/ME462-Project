@@ -289,8 +289,8 @@ class MainGui(QMainWindow):
         self.scenario_grids[Text] = self.sender()    #We need to check if radio button is pressed or not
         if  self.scenario_grids[Text].isChecked():   #Otherwise, it's sending 2 values one for itself and one for previous button
             global desired_scenario
-            desired_robot = Text
-            print(Text)
+            desired_scenario = Text
+            print(desired_scenario)
     
     def RobotSelection(self,Text):
         """
@@ -301,7 +301,7 @@ class MainGui(QMainWindow):
         if self.robot_list[Text].isChecked():       #Otherwise, it's sending 2 values one for itself and one for previous button
             global desired_robot
             desired_robot = Text
-            print(Text)
+            print(desired_robot)
 
   
 if __name__ == "__main__":
