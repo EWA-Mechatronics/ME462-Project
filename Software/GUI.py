@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import Introduction-to-basic-classes as ra
+import Introducing-basic-classes as ra
 import sys
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtWidgets import QMainWindow
