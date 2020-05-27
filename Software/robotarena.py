@@ -16,7 +16,7 @@ class Robot(ABC):
     we will build proper interfaces at robots in order to easy use at events.
     """
     
-    def __init__(self,name,speed,depth_of_view,view_angle,position = ""):
+    def __init__(self,name,speed,depth_of_view,view_angle,x_coor = "",y_coor = ""):
         """
         Specify the name, speed and the line of sight for the robots.
         """
@@ -25,7 +25,8 @@ class Robot(ABC):
         self.depth_of_view = depth_of_view # That will the instantenous depth of view of the robot
         self.view_angle = view_angle # That will the instantenous view angle of the robot
         self.type = "Robot"   #Specift the object type
-        self.position = position # store the position of the robot
+        self.x = x_coor # store the position of the robot
+        self.y = y_coor # store the position of the robot
         self.kind = name #Store its kind to give the GUI
         
     @abstractmethod  # Create an abstract method to prevent the creation of objects of ABC
@@ -47,8 +48,8 @@ class Lion(Robot):
 
     lion_number = 0
     
-    def __init__(self):
-        super().__init__("Lion",lion_base_speed,lion_base_depth_of_view,lion_base_view_angle,position = "") 
+    def __init__(self,x_coor = '',y_coor =''):
+        super().__init__("Lion",lion_base_speed,lion_base_depth_of_view,lion_base_view_angle,x_coor ,y_coor ) 
         # Create instantenous stats for lion
         self.base_speed = lion_base_speed # That will store the base speed of the lion
         self.base_depth_of_view = lion_base_depth_of_view # That will store the base depth of view
@@ -63,6 +64,7 @@ class Lion(Robot):
         
     def abstract_method(self): # Override abstractmethod to provide creation of objects
         pass
+
 
 class Deer(Robot):
     """
@@ -79,8 +81,8 @@ class Deer(Robot):
     
     deer_number = 0
      
-    def __init__(self):
-        super().__init__("Deer",deer_base_speed,deer_base_depth_of_view,deer_base_view_angle,position = "") 
+    def __init__(self,x_coor = '',y_coor =''):
+        super().__init__("Deer",deer_base_speed,deer_base_depth_of_view,deer_base_view_angle, x_coor, y_coor ) 
         # Create instantenous stats of deer
         self.base_speed = deer_base_speed # That will store the instantenous speed of the Deer
         self.base_depth_of_view = deer_base_depth_of_view # That will store the instantenous depth of view
@@ -101,13 +103,15 @@ class Grid(ABC):
     Grid is the base class for all grid types. Grid class includes the main
     properties of grids. Grids only affect the specific robot types' speeds. 
     """ 
-    def __init__(self,name,lion_speed = '' ,deer_speed = '' ): # One grid may not affect a certain type of robot. Thus
+    def __init__(self,name,lion_speed = '' ,deer_speed = '', color = '' ): # One grid may not affect a certain type of robot. Thus
                                                                # Thus, we will remain optional variable for every robot at ABC class.                                 
         self.name = name
         self.lion_speed = lion_speed 
         self.deer_speed = deer_speed
         self.type = "Grid" # Specify the object type
         self.kind = name
+        self.color = color
+        
     @abstractmethod  # Create an abstract method to prevent the creation of objects of ABC
     def abstract_method(self):
         pass
@@ -118,7 +122,7 @@ class Obstacle(Grid):
     It represents the areas which robots can not pass.
     """
     def __init__(self):
-        super().__init__("Obstacle",lion_speed = 0, deer_speed = 0)
+        super().__init__("Obstacle",lion_speed = 0, deer_speed = 0, color = "gray")
     
     def abstract_method(self): # Override abstractmethod to provide creation of objects
         pass
@@ -129,7 +133,7 @@ class Forest(Grid):
     It is a good place to hide and run from the predators.
     """
     def __init__(self): 
-        super().__init__("Forest",lion_speed = 3 ,deer_speed = 5 )
+        super().__init__("Forest",lion_speed = 3 ,deer_speed = 5, color = "green" )
 
     def abstract_method(self): # Override abstractmethod to provide creation of objects
         pass
@@ -140,12 +144,22 @@ class Savanna(Grid):
     A good place to hunt for some predators.
     """
     def __init__(self):
-        super().__init__("Savanna",lion_speed = 6) # Savanna has no effect on deer speed
-                                                   # Thus, it will return a string for deer_speed
+        super().__init__("Savanna",lion_speed = 6, color = "yellow") # Savanna has no effect on deer speed
+                                                       # Thus, it will return a string for deer_speed
 
     def abstract_method(self): # Override abstractmethod to provide creation of objects
         pass
+    
+# class RobotGrid(Grid):
+#     """
+#     The grid which shows the starting grid for the robot.
+#     """
+#     def __init__(self):
+#         super().__init__("RobotGrid",color = "red") 
 
+#     def abstract_method(self): # Override abstractmethod to provide creation of objects
+#         pass
+    
 class Random_Actuation(ABC):
     
     """
@@ -208,6 +222,33 @@ class Random_Actuation(ABC):
     @abstractmethod  # Create an abstract method to prevent the creation of objects of ABC
     def abstract_method(self):
         pass
+
+class Random_Event(ABC):
+    
+    def __init__(self,name):
+        self.name = name
+        self.kind = name
+
+    @abstractmethod  # Create an abstract method to prevent the creation of objects of ABC
+    def abstract_method(self):
+        pass
+
+class Thunder1(Random_Event):
+
+    def __init__(self):
+        super().__init__(name = "Thunder")
+    
+    def abstract_method(self): # Override abstractmethod to provide creation of objects
+        pass
+    
+class Transformer1(Random_Event):
+
+    def __init__(self):
+        super().__init__(name = "Transformer")
+    
+    def abstract_method(self): # Override abstractmethod to provide creation of objects
+        pass
+
     
 def Thunder(robot):
     """
@@ -249,7 +290,8 @@ class Sensors(ABC):
 
 class Distance_Sensor(Sensors):
     """
-    Distance sensor.
+    Distance sensor: This sensor will return the distance between robot and obstacles
+    to the user.
     """
     def __init__(self):
         super().__init__("Distance Sensor")
@@ -262,7 +304,8 @@ class Distance_Sensor(Sensors):
 
 class Position_Sensor(Sensors):
     """
-    Position sensor.
+    Position sensor: This sensor will return the current positoin of the robot to the
+    user.
     """
     def __init__(self):
         super().__init__("Position Sensor")
