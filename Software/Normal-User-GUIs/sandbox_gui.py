@@ -12,6 +12,7 @@ import time, threading
 from functools import partial # Import partial to use functions with partials
 import numpy as np #Import Numpy for using matrices.
 from PyQt5.QtCore import pyqtSignal
+import GameManager as GM
 
 text_to_show = 'This is the Sandbox GUI Display'  #Initiate global variables
 sensor_window_text = "This is the Sensor Information Window."
@@ -25,7 +26,10 @@ desired_scenario = []
 desired_actuation_list = []
 desired_robot = ""
 global_game_map = np.zeros(shape=(8,8),dtype = str) 
+game_map_colors = np.zeros(shape=(8,8),dtype = object) 
 
+flag = True
+button_list = {}
 
 class MainGui(QMainWindow):
     """
@@ -47,6 +51,7 @@ class MainGui(QMainWindow):
         self.grid_types = ra.Subclass_finder(ra.Grid)
         self.scenario_types = ra.Subclass_finder(ra.Scenario)
         self.sensor_types = ra.Subclass_finder(ra.Sensors)
+        self.game_map_actual = np.zeros(shape=(8,8),dtype = str) # Matrix of game map
         self.game_map = np.zeros(shape=(8,8),dtype = str) # Matrix of game map
         
         # Set some main window's properties
@@ -133,8 +138,22 @@ class MainGui(QMainWindow):
         return groupBox    
 
     def _startPressed(self):
-        pass
-    
+        
+            
+        global desired_sensor_list 
+        global desired_scenario 
+        global desired_actuation_list 
+        global desired_robot 
+        global global_game_map 
+        
+        self.robot = GM.world_initiater(desired_robot, desired_sensor_list, desired_actuation_list, global_game_map) #Initiate world and restore intiated robot.
+        
+        if GM.distance_finder_solo(self.robot,target_coor = [0,0]) < 0.05: #Robot reached the target ! Get target coordinates
+            self._finishPressed()
+        else:
+            #GM.game_manager_Prey_Predator_SB(robot,user_path,simulation_path,target_coor,game_map) # Take user path and simulation path from user.
+            pass
+        
     def _finishPressed(self):
         pass
 
@@ -497,9 +516,83 @@ class MapGenerator(QMainWindow):
     def __init__(self):
         super().__init__()
         
-        self.game_map = np.zeros(shape=(8,8),dtype = str) # Matrix of game map
+        global global_game_map
+        global Robot_Grid # Flags for the specifying Robot or Target Grid
+        global Target_Grid
+        
+        Robot_Grid = False
+        Target_Grid = False
+        
+        self.game_map = global_game_map # Matrix of game map
         self.grid_types = ra.Subclass_finder(ra.Grid)
         
+        # Button text | position on the QGridLayout
+        self.pre_grids = {'[0,0]': (0, 0),
+                   '[0,1]': (0, 1),
+                   '[0,2]': (0, 2),
+                   '[0,3]': (0, 3),
+                   '[0,4]': (0, 4),
+                   '[0,5]': (0, 5),
+                   '[0,6]': (0, 6),
+                   '[0,7]': (0, 7),
+                   '[1,0]': (1, 0),
+                   '[1,1]': (1, 1),
+                   '[1,2]': (1, 2),
+                   '[1,3]': (1, 3),
+                   '[1,4]': (1, 4),
+                   '[1,5]': (1, 5),
+                   '[1,6]': (1, 6),
+                   '[1,7]': (1, 7),
+                   '[2,0]': (2, 0),
+                   '[2,1]': (2, 1),
+                   '[2,2]': (2, 2),
+                   '[2,3]': (2, 3),
+                   '[2,4]': (2, 4),
+                   '[2,5]': (2, 5),
+                   '[2,6]': (2, 6),
+                   '[2,7]': (2, 7),
+                   '[3,0]': (3, 0),
+                   '[3,1]': (3, 1),
+                   '[3,2]': (3, 2),
+                   '[3,3]': (3, 3),
+                   '[3,4]': (3, 4),
+                   '[3,5]': (3, 5),
+                   '[3,6]': (3, 6),
+                   '[3,7]': (3, 7),
+                   '[4,0]': (4, 0),
+                   '[4,1]': (4, 1),
+                   '[4,2]': (4, 2),
+                   '[4,3]': (4, 3),
+                   '[4,4]': (4, 4),
+                   '[4,5]': (4, 5),
+                   '[4,6]': (4, 6),
+                   '[4,7]': (4, 7),                 
+                   '[5,0]': (5, 0),
+                   '[5,1]': (5, 1),
+                   '[5,2]': (5, 2),
+                   '[5,3]': (5, 3),
+                   '[5,4]': (5, 4),
+                   '[5,5]': (5, 5),
+                   '[5,6]': (5, 6),
+                   '[5,7]': (5, 7),                   
+                   '[6,0]': (6, 0),
+                   '[6,1]': (6, 1),
+                   '[6,2]': (6, 2),
+                   '[6,3]': (6, 3),
+                   '[6,4]': (6, 4),
+                   '[6,5]': (6, 5),
+                   '[6,6]': (6, 6),
+                   '[6,7]': (6, 7),                                                                            
+                   '[7,0]': (7, 0),
+                   '[7,1]': (7, 1),
+                   '[7,2]': (7, 2),
+                   '[7,3]': (7, 3),
+                   '[7,4]': (7, 4),
+                   '[7,5]': (7, 5),
+                   '[7,6]': (7, 6),
+                   '[7,7]': (7, 7),
+                   }
+         
         # Set some main window's properties
         self.setWindowTitle("Game Map Generation Window")
         
@@ -514,8 +607,12 @@ class MapGenerator(QMainWindow):
         self._centralWidget.setLayout(self.generalLayout)
         
         # Add widgets to general Layout
-        self.generalLayout.addWidget(self._createMapGenerator(),1,0,)
+        if flag == True:
+            self.generalLayout.addWidget(self._createMapGenerator(),2,0,)
+        else:
+            self.generalLayout.addWidget(self._refreshMapGenerator(),2,0)
         self.generalLayout.addWidget(self._setAllGrids(), 0, 0)
+        self.generalLayout.addWidget(self._setRobotandTargetGrids(),1,0)
 
     def _createMenu(self):
         '''
@@ -544,78 +641,12 @@ class MapGenerator(QMainWindow):
        '''
        This function creates Push Buttons For Defining Map at Map Generation Window.
        '''
-       groupBox = QGroupBox('Map Grids')      #Create 'Start & Finish' group box
+       groupBox = QGroupBox('Map Grids')      #Create 'Map Grids' group box
        self.grids = {}                        #Crate a list to create buttons
        MapLayout = QGridLayout()              #Create layout as a grid layout  
-       
-       # Button text | position on the QGridLayout
-       grids = {'[0,0]': (0, 0),
-                  '[0,1]': (0, 1),
-                  '[0,2]': (0, 2),
-                  '[0,3]': (0, 3),
-                  '[0,4]': (0, 4),
-                  '[0,5]': (0, 5),
-                  '[0,6]': (0, 6),
-                  '[0,7]': (0, 7),
-                  '[1,0]': (1, 0),
-                  '[1,1]': (1, 1),
-                  '[1,2]': (1, 2),
-                  '[1,3]': (1, 3),
-                  '[1,4]': (1, 4),
-                  '[1,5]': (1, 5),
-                  '[1,6]': (1, 6),
-                  '[1,7]': (1, 7),
-                  '[2,0]': (2, 0),
-                  '[2,1]': (2, 1),
-                  '[2,2]': (2, 2),
-                  '[2,3]': (2, 3),
-                  '[2,4]': (2, 4),
-                  '[2,5]': (2, 5),
-                  '[2,6]': (2, 6),
-                  '[2,7]': (2, 7),
-                  '[3,0]': (3, 0),
-                  '[3,1]': (3, 1),
-                  '[3,2]': (3, 2),
-                  '[3,3]': (3, 3),
-                  '[3,4]': (3, 4),
-                  '[3,5]': (3, 5),
-                  '[3,6]': (3, 6),
-                  '[3,7]': (3, 7),
-                  '[4,0]': (4, 0),
-                  '[4,1]': (4, 1),
-                  '[4,2]': (4, 2),
-                  '[4,3]': (4, 3),
-                  '[4,4]': (4, 4),
-                  '[4,5]': (4, 5),
-                  '[4,6]': (4, 6),
-                  '[4,7]': (4, 7),                 
-                  '[5,0]': (5, 0),
-                  '[5,1]': (5, 1),
-                  '[5,2]': (5, 2),
-                  '[5,3]': (5, 3),
-                  '[5,4]': (5, 4),
-                  '[5,5]': (5, 5),
-                  '[5,6]': (5, 6),
-                  '[5,7]': (5, 7),                   
-                  '[6,0]': (6, 0),
-                  '[6,1]': (6, 1),
-                  '[6,2]': (6, 2),
-                  '[6,3]': (6, 3),
-                  '[6,4]': (6, 4),
-                  '[6,5]': (6, 5),
-                  '[6,6]': (6, 6),
-                  '[6,7]': (6, 7),                                                                            
-                  '[7,0]': (7, 0),
-                  '[7,1]': (7, 1),
-                  '[7,2]': (7, 2),
-                  '[7,3]': (7, 3),
-                  '[7,4]': (7, 4),
-                  '[7,5]': (7, 5),
-                  '[7,6]': (7, 6),
-                  '[7,7]': (7, 7),
-                  }
+
        # Create the buttons and add them to the grid layout
-       for Text, position in grids.items():
+       for Text, position in self.pre_grids.items():
            self.grids[Text] = QPushButton(Text) #Create Push Buttons
            self.grids[Text].setFixedSize(40, 40) #Fix the size of the buttons
            self.grids[Text].clicked.connect(partial(self.map_changer,Text)) #Define functions
@@ -623,42 +654,94 @@ class MapGenerator(QMainWindow):
            
        groupBox.setLayout(MapLayout) #Setting specified layout
 
+       global flag
+       flag = False
+
+       global button_list
+       button_list = self.grids
+
        return groupBox          
 
+    def _refreshMapGenerator(self):
+       '''
+       This function creates Push Buttons For Defining Map at Map Generation Window.
+       '''
+       groupBox = QGroupBox('Map Grids')      #Create 'Map Grids' group box
+       self.grids = {}                        #Crate a list to create buttons
+       MapLayout = QGridLayout()              #Create layout as a grid layout  
+       
+       global global_game_map
+       global game_map_colors
+       
+       # Create the buttons and add them to the grid layout
+       for Text, position in self.pre_grids.items():
+           str_to_list = Text.strip('][').split(',')
+           self.grids[Text] = QPushButton(global_game_map[position[0]][position[1]]) #Create Push Buttons
+           self.grids[Text].setFixedSize(40, 40) #Fix the size of the buttons
+           self.grids[Text].clicked.connect(partial(self.map_changer,Text)) #Define functions
+           self.grids[Text].setStyleSheet("background-color: {0}".format(game_map_colors[int(str_to_list[0])][int(str_to_list[1])])) #Arrange the color of the button
+           MapLayout.addWidget(self.grids[Text], position[0], position[1]) #Add buttons to the layout
+           
+       groupBox.setLayout(MapLayout) #Setting specified layout
+
+       return groupBox          
+         
     def map_changer(self,Text):
         """
         This function let user the arrange the game map from GUI.
         
         """
-        str_to_list = Text.strip('][').split(',') # Convert string to list  
+        str_to_list = Text.strip('][').split(',') # Convert string to list 
 
-        if len(self.grids[Text].text()) > 2:
-            self.grids[Text].setText("{0}".format(self.grid_types[0][0]))            
-            self.game_map[int(str_to_list[0])][int(str_to_list[1])] = self.grid_types[0][0]
-            color = ra.str_to_class(self.grid_types[0])().color #Find the specific color of grid
-            self.grids[Text].setStyleSheet("background-color: {0}".format(color)) #Arrange the color of the button
-
-        else:
-            for i in range(len(self.grid_types)):
-                if self.grids[Text].text() == self.grid_types[i][0]:
-                    if i == len(self.grid_types)-1:
-                        self.grids[Text].setText("{0}".format(self.grid_types[0][0]))
-                        self.game_map[int(str_to_list[0])][int(str_to_list[1])] = self.grid_types[0][0]
-                        color = ra.str_to_class(self.grid_types[0])().color #Find the specific color of grid
-                        self.grids[Text].setStyleSheet("background-color: {0}".format(color)) #Arrange the color of the button
-                        break
-                    else:
-                        self.grids[Text].setText("{0}".format(self.grid_types[i+1][0]))
-                        self.game_map[int(str_to_list[0])][int(str_to_list[1])] = self.grid_types[i+1][0]
-                        color = ra.str_to_class(self.grid_types[i+1])().color #Find the specific color of grid
-                        self.grids[Text].setStyleSheet("background-color: {0}".format(color)) #Arrange the color of the button
-                        break
+        global Robot_Grid # Flags for the specifying Robot or Target Grid
+        global Target_Grid
         
         global global_game_map
-        global_game_map = self.game_map  
+        global game_map_colors
+
+        if Robot_Grid == True:
+            self.grids[Text].setText("R")
+            self.grids[Text].setStyleSheet("background-color: {0}".format('silver')) #Arrange the color of the button
+            self.game_map[int(str_to_list[0])][int(str_to_list[1])] = 'R'
+            Robot_Grid = False
+            color = 'silver'
+            
+        elif Target_Grid == True:
+            self.grids[Text].setText("T")
+            self.grids[Text].setStyleSheet("background-color: {0}".format('silver')) #Arrange the color of the button            
+            self.game_map[int(str_to_list[0])][int(str_to_list[1])] = 'T'
+            Target_Grid = False
+            color = 'silver'
+            
+        else:
+    
+            if len(self.grids[Text].text()) > 2 or len(self.grids[Text].text()) < 1 or self.grids[Text].text() == 'R' or  self.grids[Text].text() == 'T' : 
+                #Changing the name of the for the 1st time. Ex: [0][0] to 'O'.
+                self.grids[Text].setText("{0}".format(self.grid_types[0][0]))            
+                self.game_map[int(str_to_list[0])][int(str_to_list[1])] = self.grid_types[0][0]
+                color = ra.str_to_class(self.grid_types[0])().color #Find the specific color of grid
+                self.grids[Text].setStyleSheet("background-color: {0}".format(color)) #Arrange the color of the button
+    
+            else:
+                for i in range(len(self.grid_types)):
+                    if self.grids[Text].text() == self.grid_types[i][0]:
+                        if i == len(self.grid_types)-1:
+                            self.grids[Text].setText("{0}".format(self.grid_types[0][0]))
+                            self.game_map[int(str_to_list[0])][int(str_to_list[1])] = self.grid_types[0][0]
+                            color = ra.str_to_class(self.grid_types[0])().color #Find the specific color of grid
+                            self.grids[Text].setStyleSheet("background-color: {0}".format(color)) #Arrange the color of the button
+                            break
+                        else:
+                            self.grids[Text].setText("{0}".format(self.grid_types[i+1][0]))
+                            self.game_map[int(str_to_list[0])][int(str_to_list[1])] = self.grid_types[i+1][0]
+                            color = ra.str_to_class(self.grid_types[i+1])().color #Find the specific color of grid
+                            self.grids[Text].setStyleSheet("background-color: {0}".format(color)) #Arrange the color of the button
+                            break
+            
+             
+        game_map_colors[int(str_to_list[0])][int(str_to_list[1])] = color 
+        global_game_map = self.game_map 
         
-        print("Game MAP :")
-        print(global_game_map)
 
     def _setAllGrids(self):
         """
@@ -686,24 +769,64 @@ class MapGenerator(QMainWindow):
     
         return groupBox    
 
+    def _setRobotandTargetGrids(self):
+        """
+            This function creates buttons to set robot and the target of the map as a specified
+            grid type.
+        """
+        self.grids_type_grid = {}                       #Create a list to create radio buttons
+        groupBox = QGroupBox("Robot And Target Grids")  #Create 'Robot And Target Grids' group box
+        buttonLayout = QGridLayout()                    #The instance of a QGridLayout is created
+
+        
+        robot_grid = QPushButton('Robot') #Create Push Buttons
+        robot_grid.clicked.connect(partial(self._setRobotorTarget,'Robot')) #distinguish every button's funciton
+        robot_grid.setStyleSheet("background-color: {0}".format('silver')) #Arrange the color of the button
+        buttonLayout.addWidget(robot_grid,0,0) #Add buttons to the radio Layout
+  
+        target_grid = QPushButton('Target') #Create Push Buttons
+        target_grid.clicked.connect(partial(self._setRobotorTarget,'Target')) #distinguish every button's funciton
+        target_grid.setStyleSheet("background-color: {0}".format('silver')) #Arrange the color of the button
+        buttonLayout.addWidget(target_grid,0,1) #Add buttons to the radio Layout        
+
+        groupBox.setLayout(buttonLayout)             #Set the Layout of group box as radiolayout
+    
+        return groupBox  
+
+        
+    def _setRobotorTarget(self,Text):
+        
+        global Robot_Grid # Flags for the specifying Robot or Target Grid
+        global Target_Grid
+        
+        if Text == 'Robot':
+            Robot_Grid = True
+        elif Text == 'Target':
+            Target_Grid = True
+        else:
+            pass
+            
+
     def _setSpecified(self,Kind):
         """
         This function will set the all of the grid buttons' names and colors to the 
         specified grid type.
         """
+        global game_map_colors
         color = ra.str_to_class(Kind)().color #Find the specific color of grid
 
         self.game_map.fill(Kind[0]) # Set new game_map        
 
         for Text in self.grids: #Create a loop for all the grid push buttons
+             str_to_list = Text.strip('][').split(',') # Convert string to list
+             game_map_colors[int(str_to_list[0])][int(str_to_list[1])] = color
              self.grids[Text].setText(Kind[0]) # Arrange the Text of the button
              self.grids[Text].setStyleSheet("background-color: {0}".format(color)) #Arrange the color of the button
 
         global global_game_map
+        
         global_game_map = self.game_map  
-
-        print("Game MAP :")
-        print(global_game_map)
+        
         
 class ScenarioSelector(QMainWindow):
     """
@@ -1088,3 +1211,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
