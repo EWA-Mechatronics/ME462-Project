@@ -1,4 +1,3 @@
-#from robotarena import Deer,Lion
 import robotarena as ra
 import numpy as np
 import math 
