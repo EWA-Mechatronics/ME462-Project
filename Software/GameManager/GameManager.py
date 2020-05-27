@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import robotarena as ra
 import numpy as np
 import math 
