@@ -1,5 +1,19 @@
 #!/usr/bin/env python3
 
+'''
+ME 462 TERM PROJECT - 2020 Spring
+
+Created by Engineers with Attitude:
+    
+    Ege Uğur Aguş
+    İsmail Melih Canbolat
+    Koral Özbey 
+
+
+This py file is created to provide the main classes used by the 
+other Mini Robot Arena py files.   
+'''
+
 from abc import ABC, abstractmethod # We will use Abstract Base Classes for some of our classes.
 import random #For random actuations 
 import math  #For finding distance between robots 
