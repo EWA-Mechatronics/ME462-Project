@@ -1,5 +1,18 @@
 #!/usr/bin/env python3
 
+'''
+ME 462 TERM PROJECT - 2020 Spring
+
+Created by Engineers with Attitude:
+    
+    Ege Uğur Aguş
+    İsmail Melih Canbolat
+    Koral Özbey 
+
+
+This is Game Manager.    
+'''
+
 import robotarena as ra
 import numpy as np
 import math 
@@ -129,17 +142,5 @@ class game_manager_Prey_Predator_SB(GeneralGameMenager):
 
     
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+if __name__ == '__main__':
+    main()
