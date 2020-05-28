@@ -1,18 +1,30 @@
 #!/usr/bin/env python3
 
+'''
+ME 462 TERM PROJECT - 2020 Spring
+
+Created by Engineers with Attitude:
+    
+    Ege Uğur Aguş
+    İsmail Melih Canbolat
+    Koral Özbey 
+
+
+This is the Sandbox GUI. Created to provide personal study of Mini Robot Arena.    
+'''
+
 import robotarena as ra
 import sys
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtWidgets import QMainWindow
-from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QWidget, QMessageBox
 from PyQt5.QtWidgets import QGridLayout, QCheckBox, QLabel
 from PyQt5.QtWidgets import QStatusBar, QToolBar, QRadioButton
 from PyQt5.QtWidgets import QPushButton, QGroupBox
-import time, threading
 from functools import partial # Import partial to use functions with partials
 import numpy as np #Import Numpy for using matrices.
 from PyQt5.QtCore import pyqtSignal
-import GameManager as GM
+import subprocess as sp
 
 text_to_show = 'This is the Sandbox GUI Display'  #Initiate global variables
 sensor_window_text = "This is the Sensor Information Window."
@@ -24,11 +36,13 @@ actuation_window_text = "This is the Random Actuation Selection Window."
 desired_sensor_list = []
 desired_scenario = []
 desired_actuation_list = []
-desired_robot = ""
+desired_robot = 0
 global_game_map = np.zeros(shape=(8,8),dtype = str) 
 game_map_colors = np.zeros(shape=(8,8),dtype = object) 
+externalProcess = 0 #Start manager as an external process
+simulation_started = False # Flag for simulation
 
-flag = True
+refresh_flag = True #Flag for the checking if game map is generating for the for time or not.
 button_list = {}
 
 class MainGui(QMainWindow):
@@ -78,6 +92,31 @@ class MainGui(QMainWindow):
         self.generalLayout.addWidget(self._createDisplay(), 7, 0)
         self.generalLayout.addWidget(self._createRandomActuaiton(),3,0)
 
+    def closeEvent(self,event):
+        
+        '''
+        This function will prevent the missclicks on the exit button by asking for a second time.
+        Also this function will be sure that the Game Manager will be terminated when the GUI is closed.
+        '''
+        
+        global simulation_started
+        
+        reply = QMessageBox.question(self, 'Window Close', 'Are you sure you want to exit the Mini Robot Arena ?', QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+
+        if reply == QMessageBox.Yes:
+            
+            if simulation_started == False: #Simulation did not start. Thus just quit.
+            
+                event.accept()
+                
+            else: #Simulation started. Thus first terminate the Game Manager
+            
+                sp.Popen.terminate(externalProcess) # closes the process
+                event.accept()
+        else:
+            event.ignore()        
+
+
     def _createMenu(self):
         '''
         Create basic menu bar with an exit option.
@@ -98,7 +137,7 @@ class MainGui(QMainWindow):
         Create a status bar with polite massages to the user.
         '''
         status = QStatusBar()
-        status.showMessage("This is the Status Bar.")
+        status.showMessage("ME462-Term Project Mini Robot Arena !")
         self.setStatusBar(status)      
         
     def _createDisplay(self):
@@ -138,24 +177,54 @@ class MainGui(QMainWindow):
         return groupBox    
 
     def _startPressed(self):
-        
+        '''
+            This fucntion will initiate GameManager.py with given inputs.
+
+        '''
             
         global desired_sensor_list 
         global desired_scenario 
         global desired_actuation_list 
         global desired_robot 
-        global global_game_map 
+        global global_game_map
+        global externalProcess
+        global simulation_started
         
-        self.robot = GM.world_initiater(desired_robot, desired_sensor_list, desired_actuation_list, global_game_map) #Initiate world and restore intiated robot.
-        
-        if GM.distance_finder_solo(self.robot,target_coor = [0,0]) < 0.05: #Robot reached the target ! Get target coordinates
-            self._finishPressed()
+        if desired_robot != 0: # Check wheter the robot type is selected or not.
+            
+            if len(desired_scenario) != 0: # Check wheter the scenario type is selected or not.
+                 
+                simulation_started = True # Simulation is started. Set the flag.
+                
+                externalProcess = sp.Popen(['python','denemepy.py']) # runs myPyScript.py
+                
+                self.statusBar().showMessage('Simulation is Started !')      
+                
+            else:
+                self.statusBar().showMessage('Scenario did not selected !')
         else:
-            #GM.game_manager_Prey_Predator_SB(robot,user_path,simulation_path,target_coor,game_map) # Take user path and simulation path from user.
-            pass
+            self.statusBar().showMessage('Robot did not selected !')
         
     def _finishPressed(self):
-        pass
+        '''
+            This fucntion will terminate GameManager.py to prevent working loops at the background.
+
+        '''
+        
+        global externalProcess
+        global simulation_started
+        
+        if simulation_started == True: #Check wheter simulation is started or not.
+        
+            sp.Popen.terminate(externalProcess) # closes the process
+            
+            simulation_started = False # Simulation is finished. Set the flag.
+            
+            self.statusBar().showMessage('Simulation is Stoped !')
+        
+        else:
+            
+            self.statusBar().showMessage('Simulation did not started at the first place !')
 
     def _createRandomActuaiton(self):
         """
@@ -176,8 +245,14 @@ class MainGui(QMainWindow):
         """
         This is the random actuation selection push button function. This emits a signal to Controller()
         to open specified window.
-        """    
-        self.open_actuation_selector.emit()  # Emit signal          
+        """ 
+        
+        global simulation_started
+        
+        if simulation_started == True:
+            self.statusBar().showMessage('Simulation is Running ! Stop the Simulation First !')
+        else:
+            self.open_actuation_selector.emit()  # Emit signal          
 
     def _createSensorSelection(self):
         """
@@ -199,7 +274,13 @@ class MainGui(QMainWindow):
         This sensor selection push button function. This emits a signal to Controller()
         to open specified window.
         """    
-        self.open_sensor_info.emit()  # Emit signal          
+        
+        global simulation_started
+        
+        if simulation_started == True:
+            self.statusBar().showMessage('Simulation is Running ! Stop the Simulation First!')
+        else:        
+            self.open_sensor_info.emit()  # Emit signal          
 
     def _createGridType(self):
         """
@@ -220,8 +301,14 @@ class MainGui(QMainWindow):
         """
         This grid information push button function. This emits a signal to Controller()
         to open specified window.
-        """           
-        self.open_grid_info.emit()   # Emit signal
+        """        
+        
+        global simulation_started
+        
+        if simulation_started == True:
+            self.statusBar().showMessage('Simulation is Running ! Stop the Simulation First!')
+        else:          
+            self.open_grid_info.emit()   # Emit signal
 
 
     def _createMap(self):
@@ -244,7 +331,13 @@ class MainGui(QMainWindow):
         This map generator push button function. This emits a signal to Controller()
         to open specified window.
         """    
-        self.open_map_generator.emit() # Emit signal
+        
+        global simulation_started
+        
+        if simulation_started == True:
+            self.statusBar().showMessage('Simulation is Running ! Stop the Simulation First!')
+        else:  
+            self.open_map_generator.emit() # Emit signal
 
     def _createScenarioSelection(self):
         """
@@ -266,7 +359,14 @@ class MainGui(QMainWindow):
         This scenario selection push button function. This emits a signal to Controller()
         to open specified window.
         """
-        self.open_scenario_selector.emit()  # Emit signal
+ 
+        global simulation_started
+        
+        if simulation_started == True:
+            self.statusBar().showMessage('Simulation is Running ! Stop the Simulation First!')
+        else:      
+            self.open_scenario_selector.emit()  # Emit signal
+    
     
     def _createRobotSelection(self):
         """
@@ -288,7 +388,13 @@ class MainGui(QMainWindow):
         This robot selection push button function. This emits a signal to Controller()
         to open specified window.
         """
-        self.open_robot_selector.emit()  # Emit signal
+        
+        global simulation_started
+        
+        if simulation_started == True:
+            self.statusBar().showMessage('Simulation is Running ! Stop the Simulation First!')
+        else:      
+            self.open_robot_selector.emit()  # Emit signal
 
 class SensorInfo(QMainWindow):
     """
@@ -336,7 +442,7 @@ class SensorInfo(QMainWindow):
         Create a status bar with polite massages to the user.
         '''
         status = QStatusBar()
-        status.showMessage("This is the Status Bar.")
+        status.showMessage("Select the Sensors that You Want to Activate !")
         self.setStatusBar(status)    
 
     def _createSensorSelection(self):
@@ -456,7 +562,7 @@ class GridInfo(QMainWindow):
         Create a status bar with polite massages to the user.
         '''
         status = QStatusBar()
-        status.showMessage("This is the Status Bar.")
+        status.showMessage("Select the Grid type to see It's information !")
         self.setStatusBar(status)    
 
     def _createGridInformation(self):
@@ -519,6 +625,7 @@ class MapGenerator(QMainWindow):
         global global_game_map
         global Robot_Grid # Flags for the specifying Robot or Target Grid
         global Target_Grid
+        global refresh_flag
         
         Robot_Grid = False
         Target_Grid = False
@@ -607,7 +714,7 @@ class MapGenerator(QMainWindow):
         self._centralWidget.setLayout(self.generalLayout)
         
         # Add widgets to general Layout
-        if flag == True:
+        if refresh_flag == True:
             self.generalLayout.addWidget(self._createMapGenerator(),2,0,)
         else:
             self.generalLayout.addWidget(self._refreshMapGenerator(),2,0)
@@ -634,7 +741,7 @@ class MapGenerator(QMainWindow):
         Create a status bar with polite massages to the user.
         '''
         status = QStatusBar()
-        status.showMessage("This is the Status Bar.")
+        status.showMessage("Create the Game Map ! Do not Forget to Place the Robot and the Target !")
         self.setStatusBar(status)    
 
     def _createMapGenerator(self):
@@ -654,8 +761,8 @@ class MapGenerator(QMainWindow):
            
        groupBox.setLayout(MapLayout) #Setting specified layout
 
-       global flag
-       flag = False
+       global refresh_flag
+       refresh_flag = False
 
        global button_list
        button_list = self.grids
@@ -873,7 +980,7 @@ class ScenarioSelector(QMainWindow):
         Create a status bar with polite massages to the user.
         '''
         status = QStatusBar()
-        status.showMessage("This is the Status Bar.")
+        status.showMessage("Select the Scenario !")
         self.setStatusBar(status)    
 
     def _createScenarioButtons(self):
@@ -981,7 +1088,7 @@ class RobotSelector(QMainWindow):
         Create a status bar with polite massages to the user.
         '''
         status = QStatusBar()
-        status.showMessage("This is the Status Bar.")
+        status.showMessage("Select the Robot Type !")
         self.setStatusBar(status)    
       
     def _createRobotSelection(self):
@@ -1086,7 +1193,7 @@ class RandomActuationSelector(QMainWindow):
         Create a status bar with polite massages to the user.
         '''
         status = QStatusBar()
-        status.showMessage("This is the Status Bar.")
+        status.showMessage("Select the Active Random Actuations !")
         self.setStatusBar(status)    
 
     def _createActuationSelection(self):
@@ -1208,7 +1315,9 @@ def main():
     controller = sandController()
     controller.show_MainGui()
     sys.exit(app.exec_())
+    
+    
 
 if __name__ == '__main__':
     main()
-
+    sp.Popen.terminate(externalProcess) # closes the process
