@@ -34,6 +34,6 @@ the [Problems](https://github.com/EWA-Mechatronics/ME462-Project/blob/master/Sof
 
 -  **Start Button** can not be activated without selecting necessary variables, such as robot type and scenario. (SB)
 
--  Fixed an issue that causes an error when the **Stop** push button is pressed before simulation is started.
+-  Fixed an issue that causes an error when the **Stop** push button is pressed before simulation is started. (SB)
  
--  GUI now check for a second time, if the user really wants to exit or not, to prevent misscliks done.
+-  GUI now check for a second time, if the user really wants to exit or not, to prevent misscliks done. (SB)
