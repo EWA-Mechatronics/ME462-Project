@@ -1,5 +1,18 @@
 #!/usr/bin/env python3
 
+'''
+ME 462 TERM PROJECT - 2020 Spring
+
+Created by Engineers with Attitude:
+    
+    Ege Uğur Aguş
+    İsmail Melih Canbolat
+    Koral Özbey 
+
+
+This is the Competitive GUI. Created to provide competition at Mini Robot Arena.    
+'''
+
 import robotarena as ra
 import gui_selection_gui as gsg
 import sys
