@@ -1,7 +1,19 @@
 #!/usr/bin/env python3
 
+'''
+ME 462 TERM PROJECT - 2020 Spring
+
+Created by Engineers with Attitude:
+    
+    Ege Uğur Aguş
+    İsmail Melih Canbolat
+    Koral Özbey 
+
+This is the Mode Selection GUI. Created to provide selection for the Mode.   
+'''
+
 import sandbox_gui as sg
-import competetive_gui as cg
+import competitive_gui as cg
 import sys
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtWidgets import QMainWindow
