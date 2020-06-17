@@ -10,8 +10,7 @@ they can be tracked from the [Updates](https://github.com/EWA-Mechatronics/ME462
 
 ### Modarate Problems
 
-- Subclasses of Grid class,such as Savanna and Forest, need a dictionary instead of variables for specific robot base speeds in order to
-provide smooth calculations at manager.
+- None.
 
 ### Major Problems
 
