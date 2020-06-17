@@ -10,7 +10,7 @@ they can be tracked from the [Updates](https://github.com/EWA-Mechatronics/ME462
 
 ### Modarate Problems
 
-- None.
+- The way to get user and simulation paths need to be defined. 
 
 ### Minor Problems
 
