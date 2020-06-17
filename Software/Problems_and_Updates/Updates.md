@@ -3,6 +3,19 @@
 Main aim of this file is recording solved problems, recorded at 
 the [Problems](https://github.com/EWA-Mechatronics/ME462-Project/blob/master/Software/Problems_and_Updates/Problems.md) file,  of the software part by dates.
 
+### 16.06.2020
+
+-  SB Game Manager is created for 'Prey and Predator' game scenario.
+
+-  Fixed the issue that causes the transmited data, with pipe, lost their meanings, if the type of the data is a list. 
+For example, if one wished to transmit the following list, active_sensors = ["Vision_sensor", "Distance_sensor"], by using pipe, it would be transmitted as "Vision_sensorDistance_sensor". However, now it will transmitted as "Vision_sensor,Distance_sensor" to make it possible to strip from ','.
+
+### 15.06.2020
+
+-  Subprocess pipe is modified to be used with inputs.
+
+-  Created dictionary instead of variables for specific robot base speeds at subclasses of Grid class,such as Savanna and Forest, need a  in order to provide smooth calculations at manager.
+
 ### 28.05.2020
 
 -  Status bars at the all of the windows are set to provide necessary information to the user for possible cases. (SB)
