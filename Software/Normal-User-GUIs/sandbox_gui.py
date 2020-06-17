@@ -195,8 +195,15 @@ class MainGui(QMainWindow):
             if len(desired_scenario) != 0: # Check wheter the scenario type is selected or not.
                  
                 simulation_started = True # Simulation is started. Set the flag.
+                args = [desired_sensor_list,desired_scenario,desired_actuation_list,desired_robot,"GAME_MAP","SB_Prey_Predator"]
+                i = 0                
+                for arg in args: # If parameter is a list convert it to a string splitted with ',' to be able to read at manager
+                    if type(arg) == list:
+                        string = ",".join(arg)
+                        args[i] = string
+                    i += 1
                 
-                externalProcess = sp.Popen(['python','denemepy.py']) # runs myPyScript.py
+                externalProcess = sp.Popen(['python','denemepy.py', args[0],args[1],args[2],args[3],args[4],args[5] ]) # Runs specified py script
                 
                 self.statusBar().showMessage('Simulation is Started !')      
                 
