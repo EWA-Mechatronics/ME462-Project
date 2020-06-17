@@ -125,6 +125,7 @@ class Grid(ABC):
         self.type = "Grid" # Specify the object type
         self.kind = name
         self.color = color
+        self.speed_dictionary = {"Lion": lion_speed, "Deer" : deer_speed}
         
     @abstractmethod  # Create an abstract method to prevent the creation of objects of ABC
     def abstract_method(self):
