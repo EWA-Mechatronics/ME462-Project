@@ -14,4 +14,4 @@ they can be tracked from the [Updates](https://github.com/EWA-Mechatronics/ME462
 
 ### Major Problems
 
-- None.
+- Transmitting the selected game map by using Pipe is problemetic due to type of the game map, numpy array.
