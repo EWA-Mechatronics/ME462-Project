@@ -16,6 +16,7 @@ This is Game Manager.
 import robotarena as ra
 import numpy as np
 import math 
+import sys
 
 from os import listdir
 from os.path import isfile, join
@@ -130,17 +131,29 @@ class game_manager_Prey_Predator_SB(GeneralGameMenager):
     
     def _loop(self):
         
-        while self.distance_finder_robot_target(self.robot,self.target_coor) > 0.5: #Robot did not reach the target.
+        while self.distance_finder_robot_target(self.robot,self.target_coor) >= 1: #Robot did not reach the target.
+        
+            robot_currenet_coords = self.text_reader(self.simulation_path)    # Read the current robot coordinates from simulation
+            self.robot.x = robot_currenet_coords[0]                           # 1st index of the list is the x coordinates
+            self.robot.y = robot_currenet_coords[1]                           # 2nd index of the list is the x coordinates
             
-            if self.check_robot_grid(self.robot,self.game_map) == 'O':
-                self.punishment()
+            if self.check_robot_grid(self.robot,self.game_map) == 'O':        # Check the robot on an obstacle or not
+                self.punishment() # Robot hit the obstacle apply punishment
             else:
                 #Check the grid and evaluate the robots current maximum speed.
-                #robot.speed = eval()
+                self.robot.speed = eval("ra."+self.check_robot_grid(self.robot,self.game_map)+"().speed_dictionary['{0}']".format(self.robot.kind))
                 
-                self.robot_move(self.robot,self.user_path,self.simulation_path) # Take user path and simulation path from user.
+                self.robot_move(self.robot) # Take user path and simulation path from user.
 
     
+def main(arg1,arg2,arg3,arg4,arg5,arg6):
+    
+        if arg6 == 'SB_Prey_Predator':
+            game_manager_Prey_Predator_SB() # Take inputs in order.
 
-if __name__ == '__main__':
-    main()
+
+
+
+if __name__ == "__main__":
+    main(sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4],sys.argv[5],sys.argv[6])
+
