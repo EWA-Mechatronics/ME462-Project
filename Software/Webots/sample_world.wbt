@@ -1,0 +1,1612 @@
+#VRML_SIM R2020a utf8
+WorldInfo {
+}
+Viewpoint {
+  orientation -1 0 0 1.5708
+  position 0.75 4.010695187165775 0.75
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+Floor {
+  translation 0.075 0 0.075
+  name "floor(0)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/desert_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Solid {
+  translation 0.22499999999999998 0.075 0.075
+  children [
+    DEF obstacle_1 Shape {
+      appearance PBRAppearance {
+        baseColor 0 0 0
+        roughness 1
+        metalness 0
+      }
+      geometry Box {
+        size 0.15 0.15 0.15
+      }
+    }
+  ]
+  name "obstacle_1"
+  boundingObject USE obstacle_1
+}
+Solid {
+  translation 0.375 0.075 0.075
+  children [
+    DEF obstacle_2 Shape {
+      appearance PBRAppearance {
+        baseColor 0 0 0
+        roughness 1
+        metalness 0
+      }
+      geometry Box {
+        size 0.15 0.15 0.15
+      }
+    }
+  ]
+  name "obstacle_2"
+  boundingObject USE obstacle_2
+}
+Floor {
+  translation 0.5249999999999999 0 0.075
+  name "floor(3)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/desert_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Solid {
+  translation 0.6749999999999999 0.075 0.075
+  children [
+    DEF obstacle_4 Shape {
+      appearance PBRAppearance {
+        baseColor 0 0 0
+        roughness 1
+        metalness 0
+      }
+      geometry Box {
+        size 0.15 0.15 0.15
+      }
+    }
+  ]
+  name "obstacle_4"
+  boundingObject USE obstacle_4
+}
+Floor {
+  translation 0.825 0 0.075
+  name "floor(5)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/water_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 0.9749999999999999 0 0.075
+  name "floor(6)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/desert_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 1.125 0 0.075
+  name "floor(7)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/water_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Solid {
+  translation 1.275 0.075 0.075
+  children [
+    DEF obstacle_8 Shape {
+      appearance PBRAppearance {
+        baseColor 0 0 0
+        roughness 1
+        metalness 0
+      }
+      geometry Box {
+        size 0.15 0.15 0.15
+      }
+    }
+  ]
+  name "obstacle_8"
+  boundingObject USE obstacle_8
+}
+Floor {
+  translation 1.4249999999999998 0 0.075
+  name "floor(9)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/water_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 0.075 0 0.22499999999999998
+  name "floor(10)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/desert_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 0.22499999999999998 0 0.22499999999999998
+  name "floor(11)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/desert_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 0.375 0 0.22499999999999998
+  name "floor(12)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/earth_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 0.5249999999999999 0 0.22499999999999998
+  name "floor(13)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/desert_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Solid {
+  translation 0.6749999999999999 0.075 0.22499999999999998
+  children [
+    DEF obstacle_14 Shape {
+      appearance PBRAppearance {
+        baseColor 0 0 0
+        roughness 1
+        metalness 0
+      }
+      geometry Box {
+        size 0.15 0.15 0.15
+      }
+    }
+  ]
+  name "obstacle_14"
+  boundingObject USE obstacle_14
+}
+Floor {
+  translation 0.825 0 0.22499999999999998
+  name "floor(15)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/desert_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 0.9749999999999999 0 0.22499999999999998
+  name "floor(16)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/cell_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 1.125 0 0.22499999999999998
+  name "floor(17)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/water_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 1.275 0 0.22499999999999998
+  name "floor(18)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/desert_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Solid {
+  translation 1.4249999999999998 0.075 0.22499999999999998
+  children [
+    DEF obstacle_19 Shape {
+      appearance PBRAppearance {
+        baseColor 0 0 0
+        roughness 1
+        metalness 0
+      }
+      geometry Box {
+        size 0.15 0.15 0.15
+      }
+    }
+  ]
+  name "obstacle_19"
+  boundingObject USE obstacle_19
+}
+Solid {
+  translation 0.075 0.075 0.375
+  children [
+    DEF obstacle_20 Shape {
+      appearance PBRAppearance {
+        baseColor 0 0 0
+        roughness 1
+        metalness 0
+      }
+      geometry Box {
+        size 0.15 0.15 0.15
+      }
+    }
+  ]
+  name "obstacle_20"
+  boundingObject USE obstacle_20
+}
+Floor {
+  translation 0.22499999999999998 0 0.375
+  name "floor(21)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/cell_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 0.375 0 0.375
+  name "floor(22)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/water_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 0.5249999999999999 0 0.375
+  name "floor(23)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/cell_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 0.6749999999999999 0 0.375
+  name "floor(24)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/water_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 0.825 0 0.375
+  name "floor(25)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/cell_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 0.9749999999999999 0 0.375
+  name "floor(26)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/desert_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 1.125 0 0.375
+  name "floor(27)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/earth_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 1.275 0 0.375
+  name "floor(28)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/cell_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 1.4249999999999998 0 0.375
+  name "floor(29)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/earth_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Solid {
+  translation 0.075 0.075 0.5249999999999999
+  children [
+    DEF obstacle_30 Shape {
+      appearance PBRAppearance {
+        baseColor 0 0 0
+        roughness 1
+        metalness 0
+      }
+      geometry Box {
+        size 0.15 0.15 0.15
+      }
+    }
+  ]
+  name "obstacle_30"
+  boundingObject USE obstacle_30
+}
+Floor {
+  translation 0.22499999999999998 0 0.5249999999999999
+  name "floor(31)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/earth_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 0.375 0 0.5249999999999999
+  name "floor(32)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/cell_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 0.5249999999999999 0 0.5249999999999999
+  name "floor(33)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/water_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 0.6749999999999999 0 0.5249999999999999
+  name "floor(34)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/earth_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 0.825 0 0.5249999999999999
+  name "floor(35)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/desert_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 0.9749999999999999 0 0.5249999999999999
+  name "floor(36)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/water_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 1.125 0 0.5249999999999999
+  name "floor(37)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/water_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 1.275 0 0.5249999999999999
+  name "floor(38)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/desert_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 1.4249999999999998 0 0.5249999999999999
+  name "floor(39)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/earth_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Solid {
+  translation 0.075 0.075 0.6749999999999999
+  children [
+    DEF obstacle_40 Shape {
+      appearance PBRAppearance {
+        baseColor 0 0 0
+        roughness 1
+        metalness 0
+      }
+      geometry Box {
+        size 0.15 0.15 0.15
+      }
+    }
+  ]
+  name "obstacle_40"
+  boundingObject USE obstacle_40
+}
+Floor {
+  translation 0.22499999999999998 0 0.6749999999999999
+  name "floor(41)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/water_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 0.375 0 0.6749999999999999
+  name "floor(42)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/earth_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 0.5249999999999999 0 0.6749999999999999
+  name "floor(43)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/desert_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 0.6749999999999999 0 0.6749999999999999
+  name "floor(44)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/desert_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 0.825 0 0.6749999999999999
+  name "floor(45)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/desert_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 0.9749999999999999 0 0.6749999999999999
+  name "floor(46)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/water_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 1.125 0 0.6749999999999999
+  name "floor(47)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/earth_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Solid {
+  translation 1.275 0.075 0.6749999999999999
+  children [
+    DEF obstacle_48 Shape {
+      appearance PBRAppearance {
+        baseColor 0 0 0
+        roughness 1
+        metalness 0
+      }
+      geometry Box {
+        size 0.15 0.15 0.15
+      }
+    }
+  ]
+  name "obstacle_48"
+  boundingObject USE obstacle_48
+}
+Floor {
+  translation 1.4249999999999998 0 0.6749999999999999
+  name "floor(49)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/water_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 0.075 0 0.825
+  name "floor(50)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/earth_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 0.22499999999999998 0 0.825
+  name "floor(51)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/earth_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Solid {
+  translation 0.375 0.075 0.825
+  children [
+    DEF obstacle_52 Shape {
+      appearance PBRAppearance {
+        baseColor 0 0 0
+        roughness 1
+        metalness 0
+      }
+      geometry Box {
+        size 0.15 0.15 0.15
+      }
+    }
+  ]
+  name "obstacle_52"
+  boundingObject USE obstacle_52
+}
+Floor {
+  translation 0.5249999999999999 0 0.825
+  name "floor(53)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/desert_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 0.6749999999999999 0 0.825
+  name "floor(54)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/desert_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 0.825 0 0.825
+  name "floor(55)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/water_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 0.9749999999999999 0 0.825
+  name "floor(56)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/desert_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Solid {
+  translation 1.125 0.075 0.825
+  children [
+    DEF obstacle_57 Shape {
+      appearance PBRAppearance {
+        baseColor 0 0 0
+        roughness 1
+        metalness 0
+      }
+      geometry Box {
+        size 0.15 0.15 0.15
+      }
+    }
+  ]
+  name "obstacle_57"
+  boundingObject USE obstacle_57
+}
+Floor {
+  translation 1.275 0 0.825
+  name "floor(58)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/water_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 1.4249999999999998 0 0.825
+  name "floor(59)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/water_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 0.075 0 0.9749999999999999
+  name "floor(60)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/earth_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Solid {
+  translation 0.22499999999999998 0.075 0.9749999999999999
+  children [
+    DEF obstacle_61 Shape {
+      appearance PBRAppearance {
+        baseColor 0 0 0
+        roughness 1
+        metalness 0
+      }
+      geometry Box {
+        size 0.15 0.15 0.15
+      }
+    }
+  ]
+  name "obstacle_61"
+  boundingObject USE obstacle_61
+}
+Floor {
+  translation 0.375 0 0.9749999999999999
+  name "floor(62)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/cell_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 0.5249999999999999 0 0.9749999999999999
+  name "floor(63)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/earth_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 0.6749999999999999 0 0.9749999999999999
+  name "floor(64)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/desert_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 0.825 0 0.9749999999999999
+  name "floor(65)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/earth_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Solid {
+  translation 0.9749999999999999 0.075 0.9749999999999999
+  children [
+    DEF obstacle_66 Shape {
+      appearance PBRAppearance {
+        baseColor 0 0 0
+        roughness 1
+        metalness 0
+      }
+      geometry Box {
+        size 0.15 0.15 0.15
+      }
+    }
+  ]
+  name "obstacle_66"
+  boundingObject USE obstacle_66
+}
+Floor {
+  translation 1.125 0 0.9749999999999999
+  name "floor(67)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/earth_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 1.275 0 0.9749999999999999
+  name "floor(68)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/desert_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 1.4249999999999998 0 0.9749999999999999
+  name "floor(69)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/water_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 0.075 0 1.125
+  name "floor(70)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/desert_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 0.22499999999999998 0 1.125
+  name "floor(71)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/earth_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Solid {
+  translation 0.375 0.075 1.125
+  children [
+    DEF obstacle_72 Shape {
+      appearance PBRAppearance {
+        baseColor 0 0 0
+        roughness 1
+        metalness 0
+      }
+      geometry Box {
+        size 0.15 0.15 0.15
+      }
+    }
+  ]
+  name "obstacle_72"
+  boundingObject USE obstacle_72
+}
+Floor {
+  translation 0.5249999999999999 0 1.125
+  name "floor(73)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/cell_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 0.6749999999999999 0 1.125
+  name "floor(74)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/water_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 0.825 0 1.125
+  name "floor(75)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/water_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 0.9749999999999999 0 1.125
+  name "floor(76)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/cell_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 1.125 0 1.125
+  name "floor(77)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/water_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 1.275 0 1.125
+  name "floor(78)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/earth_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 1.4249999999999998 0 1.125
+  name "floor(79)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/desert_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 0.075 0 1.275
+  name "floor(80)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/cell_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 0.22499999999999998 0 1.275
+  name "floor(81)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/cell_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 0.375 0 1.275
+  name "floor(82)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/earth_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 0.5249999999999999 0 1.275
+  name "floor(83)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/desert_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 0.6749999999999999 0 1.275
+  name "floor(84)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/earth_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 0.825 0 1.275
+  name "floor(85)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/earth_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Solid {
+  translation 0.9749999999999999 0.075 1.275
+  children [
+    DEF obstacle_86 Shape {
+      appearance PBRAppearance {
+        baseColor 0 0 0
+        roughness 1
+        metalness 0
+      }
+      geometry Box {
+        size 0.15 0.15 0.15
+      }
+    }
+  ]
+  name "obstacle_86"
+  boundingObject USE obstacle_86
+}
+Solid {
+  translation 1.125 0.075 1.275
+  children [
+    DEF obstacle_87 Shape {
+      appearance PBRAppearance {
+        baseColor 0 0 0
+        roughness 1
+        metalness 0
+      }
+      geometry Box {
+        size 0.15 0.15 0.15
+      }
+    }
+  ]
+  name "obstacle_87"
+  boundingObject USE obstacle_87
+}
+Floor {
+  translation 1.275 0 1.275
+  name "floor(88)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/earth_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 1.4249999999999998 0 1.275
+  name "floor(89)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/desert_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 0.075 0 1.4249999999999998
+  name "floor(90)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/water_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 0.22499999999999998 0 1.4249999999999998
+  name "floor(91)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/water_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Solid {
+  translation 0.375 0.075 1.4249999999999998
+  children [
+    DEF obstacle_92 Shape {
+      appearance PBRAppearance {
+        baseColor 0 0 0
+        roughness 1
+        metalness 0
+      }
+      geometry Box {
+        size 0.15 0.15 0.15
+      }
+    }
+  ]
+  name "obstacle_92"
+  boundingObject USE obstacle_92
+}
+Floor {
+  translation 0.5249999999999999 0 1.4249999999999998
+  name "floor(93)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/earth_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 0.6749999999999999 0 1.4249999999999998
+  name "floor(94)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/earth_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Solid {
+  translation 0.825 0.075 1.4249999999999998
+  children [
+    DEF obstacle_95 Shape {
+      appearance PBRAppearance {
+        baseColor 0 0 0
+        roughness 1
+        metalness 0
+      }
+      geometry Box {
+        size 0.15 0.15 0.15
+      }
+    }
+  ]
+  name "obstacle_95"
+  boundingObject USE obstacle_95
+}
+Floor {
+  translation 0.9749999999999999 0 1.4249999999999998
+  name "floor(96)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/cell_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 1.125 0 1.4249999999999998
+  name "floor(97)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/earth_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 1.275 0 1.4249999999999998
+  name "floor(98)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/earth_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+Floor {
+  translation 1.4249999999999998 0 1.4249999999999998
+  name "floor(99)"
+  size 0.15 0.15
+  tileSize 0.15 0.15
+  appearance Appearance {
+    texture ImageTexture {
+      url [
+        "textures/desert_texture.jpg"
+      ]
+      filtering 0
+    }
+  }
+}
+DEF Robot_1 Robot {
+  translation -0.15 0.03 0.15
+  children [
+
+    Solid {
+      translation 0 0.0305 0
+      rotation 0 1 0 -1.5708
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+              url [
+                "C:/Users/Korcan/Desktop/marker.png"
+              ]
+            }
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.07 1e-05 0.07
+          }
+        }
+      ]
+      name "marker_2"
+    }
+    DEF robot_1_body Shape {
+      appearance PBRAppearance {
+        baseColor 0.917647 0.145098 0.145098
+        roughness 1
+        metalness 0
+      }
+      geometry Box {
+        size 0.09 0.06 0.07
+      }
+    }
+    DistanceSensor {
+      translation 0.045 0 0
+      name "ds_1_1"
+      lookupTable [
+        0 0 0
+        0.1 100 0
+      ]
+    }
+    DistanceSensor {
+      translation -0.045 0 0
+      rotation 0 1 0 3.14159
+      name "ds_1_2"
+      lookupTable [
+        0 0 0
+        0.1 100 0
+      ]
+    }
+    DistanceSensor {
+      translation 0 0 0.035
+      rotation 0 1 0 -1.570795
+      name "ds_1_3"
+      lookupTable [
+        0 0 0
+        0.1 100 0
+      ]
+    }
+    DistanceSensor {
+      translation 0 0 -0.035
+      rotation 0 1 0 1.570795
+      name "ds_1_4"
+      lookupTable [
+        0 0 0
+        0.1 100 0
+      ]
+    }
+  ]
+  name "robot_1"
+  boundingObject USE robot_1_body
+  controller "Robot_1"
+  supervisor TRUE
+}
+DEF Robot_2 Robot {
+  translation -0.15 0.03 0.44999999999999996
+  children [
+    DEF robot_2_body Shape {
+      appearance PBRAppearance {
+        baseColor 0.917647 0.145098 0.145098
+        roughness 1
+        metalness 0
+      }
+      geometry Box {
+        size 0.09 0.06 0.07
+      }
+    }
+    DistanceSensor {
+      translation 0.045 0 0
+      name "ds_2_1"
+      lookupTable [
+        0 0 0
+        0.1 100 0
+      ]
+    }
+    DistanceSensor {
+      translation -0.045 0 0
+      rotation 0 1 0 3.14159
+      name "ds_2_2"
+      lookupTable [
+        0 0 0
+        0.1 100 0
+      ]
+    }
+    DistanceSensor {
+      translation 0 0 0.035
+      rotation 0 1 0 -1.570795
+      name "ds_2_3"
+      lookupTable [
+        0 0 0
+        0.1 100 0
+      ]
+    }
+    DistanceSensor {
+      translation 0 0 -0.035
+      rotation 0 1 0 1.570795
+      name "ds_2_4"
+      lookupTable [
+        0 0 0
+        0.1 100 0
+      ]
+    }
+  ]
+  name "robot_2"
+  boundingObject USE robot_2_body
+  controller "Robot_2"
+  supervisor TRUE
+}
+DEF Arena_Cam Robot {
+  translation 0.75 3.5650623885918002 0.75
+  rotation -1 0 0 1.5708
+  children [
+    Camera {
+      name "Arena_Top_Cam"
+      width 1920
+      height 1080
+    }
+  ]
+  name "robot_0"
+  controller "arena_top_cam"
+  supervisor TRUE
+}
