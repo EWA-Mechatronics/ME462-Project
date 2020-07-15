@@ -9,7 +9,6 @@ def on_connect(client, userdata, flags, rc):
     client.subscribe("EWA_arenacam")
 
 def on_message(client, userdata, msg):
-    print(type(msg.payload))
     f = open("arena_top_image.png","wb")
     f.write(msg.payload)
     f.close()
