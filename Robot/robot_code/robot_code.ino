@@ -42,7 +42,8 @@ byte battery_msg[2];               // Message to be sent via MQTT about battery 
 const char* mqtt_server = "192.168.1.107";  // Mosquitto broker IP address
 const char* ssid = "CANBOLAT_plus";         // Router SSID
 const char* password = "canbolat19";        // Router password
-
+const char* publish_topic = "me462_robot_1_battery";       // MQTT topic to publish battery status
+const char* subscription_topic = "me462_robot_1_control";  // MQTT topic to subscribe to get control input
 
 WiFiClient esp;  // Creates a client that can connect to a specified IP address and port as defined in client.connect()
 
@@ -92,36 +93,36 @@ void loop()  // Main loop
 
   analogReadOut = analogRead(analogPin);                 // Read the analog pin to determine battery level
   battery_percentage = map(analogReadOut,0,1023,0,100);  // These values need to be adjusted for accurate voltage level reading (same below)
-  Serial.println(battery_percentage);
 
   currentMillis = millis();  // Read the current millis and store it
   if (currentMillis - previousMillis > battery_interval)  // Publish the battery information if a certain amount of time has passed
   {
   	previousMillis = currentMillis;
   	battery_msg[0] = battery_percentage;               // Assign battery level info to mqtt message to be sent
-  	client.publish("battery_status", battery_msg, 1);  // Publish the battery information message to the topic "battery_status". (1 byte)
+  	client.publish(publish_topic, battery_msg, 1);  // Publish the battery information message to the topic "battery_status". (1 byte)
+  	Serial.println(battery_percentage);
   }
 
-  if (battery_percentage < critical_battery_level)     // Critical battery level loop - (???????????????????? Check DEEP SLEEP ?????????????????)
-  {
-  	Serial.println("WARNING ----- BATTERY LEVEL IS CRITICAL ----- WARNING");
-  	//Minimize power consumption
-  	//Make sure that the motors don't draw any current
-  	while (battery_percentage < critical_battery_level)     // Fading Red LED indicates critical battery level
-  	{
-      analogWrite(rgb_R, fade_brightness);
-      fade_brightness -= fade;
-      delay(4);
-      if (fade_brightness < 512 || fade_brightness > 1023)  // Change the direction of fading if the limit is reached
-      	{
-      		fade = -fade;
-      		delay(1000);
-      	}
-      analogReadOut = analogRead(analogPin);                 // Read the analog pin to determine battery level again
-      battery_percentage = map(analogReadOut,0,1023,0,100);  // These values need to be adjusted as above
-  	}
-    analogWrite(rgb_R, 1023);  // Turn off the led when the battery is charged enough
-  }
+  // if (battery_percentage < critical_battery_level)     // Critical battery level loop - (???????????????????? Check DEEP SLEEP ?????????????????)
+  // {
+  // 	Serial.println("WARNING ----- BATTERY LEVEL IS CRITICAL ----- WARNING");
+  // 	//Minimize power consumption
+  // 	//Make sure that the motors don't draw any current
+  // 	while (battery_percentage < critical_battery_level)     // Fading Red LED indicates critical battery level
+  // 	{
+  //     analogWrite(rgb_R, fade_brightness);
+  //     fade_brightness -= fade;
+  //     delay(4);
+  //     if (fade_brightness < 512 || fade_brightness > 1023)  // Change the direction of fading if the limit is reached
+  //     	{
+  //     		fade = -fade;
+  //     		delay(1000);
+  //     	}
+  //     analogReadOut = analogRead(analogPin);                 // Read the analog pin to determine battery level again
+  //     battery_percentage = map(analogReadOut,0,1023,0,100);  // These values need to be adjusted as above
+  // 	}
+  //   analogWrite(rgb_R, 1023);  // Turn off the led when the battery is charged enough
+  // }
 
   delay(10);  // Must delay to allow ESP8266 WIFI functions to run ???
 }
@@ -157,8 +158,8 @@ void connectToBroker()  // The function that establishes the connection to the M
       if (client.connect(clientID.c_str()))  // If the connection is successful
       {
         Serial.println("\tMQTT Connected");
-        led_blink('B', 1, 3000);         // Indicate succesful MQTT connection in blue for a few seconds
-        client.subscribe("topic_name");  // Subscribe to a topic
+        led_blink('B', 1, 3000);               // Indicate succesful MQTT connection in blue for a few seconds
+        client.subscribe(subscription_topic);  // Subscribe to the topic
       }
       else
       {
@@ -195,6 +196,11 @@ void callback(char* topic, byte* payload, unsigned int length) // This function 
   digitalWrite(motorB_phase, motorB_direction);  // Set the direction of motor B
   analogWrite(motorA_enable, motorA_speed);      // Set the speed of motor A
   analogWrite(motorB_enable, motorB_speed);      // Set the speed of motor B
+
+  // Serial.println(motorA_direction);
+  // Serial.println(motorA_speed);
+  // Serial.println(motorB_direction);
+  // Serial.println(motorB_speed);
 }
 
 void led_analog_control (int r, int g, int b)
