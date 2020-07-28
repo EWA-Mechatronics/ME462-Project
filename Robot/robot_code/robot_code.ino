@@ -5,6 +5,14 @@
  * This code allows NodeMCU to connect to an MQTT Broker and controls the robot
  * according to the information received through MQTT subscription.
  * 
+ * 
+ * - Green Blink      -> Connecting to wifi
+ * - Green            -> Wifi connected
+ * - Blue             -> MQTT connected
+ * - Blue Blink       -> MQTT connection failure
+ * - Red Rapid blink  -> Lost Wifi or MQTT connection
+ * - Red Fading       -> Critical battery level
+ * 
  */
 
 #include <PubSubClient.h>  // Required for MQTT communication protocol - https://pubsubclient.knolleary.net/
@@ -19,17 +27,17 @@ int rgb_G = 5;           // D1 pin - RGB Led G pin
 int rgb_B = 4;           // D0 pin - RGB Led B pin
 int analogPin = A0;      // A0 ADC pin on Nodemcu - 10-bit resolution
 
-int motorA_direction;    // Define variables to store information about the states the motors
+int motorA_direction;    // Define variables to store information about the states of the motors
 int motorA_speed;
 int motorB_direction;
 int motorB_speed;
 
 int analogReadOut;                 // Analog pin readout - gives information about the battery level
 int battery_percentage;            // Variable to store battery percentage
-int battery_interval = 1000;       // Time interval to send battery information via MQTT
+int battery_interval = 3000;       // Time interval to send battery information via MQTT
 unsigned long previousMillis = 0;  // To store the last time battery info was sent
 unsigned long currentMillis = 0;   // To store the current time in milliseconds
-int critical_battery_level = 30;   // Critical battery level below which the robot stops working
+int critical_battery_level = 10;   // Critical battery level below which the robot stops working
 int fade_brightness = 1023;        // For critical battery level indication loop
 int fade = 1;                      // For critical battery level indication loop
 
@@ -91,41 +99,42 @@ void loop()  // Main loop
 
   client.loop();  // This should be called regularly to allow the client to process incoming messages and maintain its connection to the server
 
-  analogReadOut = analogRead(analogPin);                 // Read the analog pin to determine battery level
-  battery_percentage = map(analogReadOut,0,1023,0,100);  // These values need to be adjusted for accurate voltage level reading (same below)
+  read_battery();  // Call the function that reads the battery level
 
   currentMillis = millis();  // Read the current millis and store it
   if (currentMillis - previousMillis > battery_interval)  // Publish the battery information if a certain amount of time has passed
   {
   	previousMillis = currentMillis;
-  	battery_msg[0] = battery_percentage;               // Assign battery level info to mqtt message to be sent
+  	battery_msg[0] = battery_percentage;            // Assign battery level info to mqtt message to be sent
   	client.publish(publish_topic, battery_msg, 1);  // Publish the battery information message to the topic "battery_status". (1 byte)
+    Serial.print("Battery Level: ");
   	Serial.println(battery_percentage);
   }
 
-  // if (battery_percentage < critical_battery_level)     // Critical battery level loop - (???????????????????? Check DEEP SLEEP ?????????????????)
-  // {
-  // 	Serial.println("WARNING ----- BATTERY LEVEL IS CRITICAL ----- WARNING");
-  // 	//Minimize power consumption
-  // 	//Make sure that the motors don't draw any current
-  // 	while (battery_percentage < critical_battery_level)     // Fading Red LED indicates critical battery level
-  // 	{
-  //     analogWrite(rgb_R, fade_brightness);
-  //     fade_brightness -= fade;
-  //     delay(4);
-  //     if (fade_brightness < 512 || fade_brightness > 1023)  // Change the direction of fading if the limit is reached
-  //     	{
-  //     		fade = -fade;
-  //     		delay(1000);
-  //     	}
-  //     analogReadOut = analogRead(analogPin);                 // Read the analog pin to determine battery level again
-  //     battery_percentage = map(analogReadOut,0,1023,0,100);  // These values need to be adjusted as above
-  // 	}
-  //   analogWrite(rgb_R, 1023);  // Turn off the led when the battery is charged enough
-  // }
+  if (battery_percentage < critical_battery_level)  // Critical battery level loop - (???????????????????? Check DEEP SLEEP ?????????????????)
+  {
+  	Serial.println("WARNING ----- BATTERY LEVEL IS CRITICAL ----- WARNING");
+  	//Minimize power consumption
+  	//Make sure that the motors don't draw any current
+  	while (battery_percentage < critical_battery_level)  // Fading Red LED indicates critical battery level
+  	{
+      analogWrite(rgb_R, fade_brightness);
+      fade_brightness -= fade;
+      delay(3);
+      if (fade_brightness < 512 || fade_brightness > 1023)  // Change the direction of fading if the limit is reached
+      	{
+      		fade = -fade;
+      		delay(1000);
+      	}
+        read_battery();  // Read the battery level to check if there is enough charge to exit the loop
+        battery_percentage -= 3;  // Add hysteresis to prevent bouncing
+  	}
+    analogWrite(rgb_R, 1023);  // Turn off the led if exiting the loop
+  }
 
   delay(10);  // Must delay to allow ESP8266 WIFI functions to run ???
 }
+
 
 void connectToWifi()  // The function that establishes the wifi connection
 {
@@ -144,6 +153,7 @@ void connectToWifi()  // The function that establishes the wifi connection
 
   led_blink('G', 1, 3000);  // Indicate succesful wifi connection in green for a few seconds
 }
+
 
 void connectToBroker()  // The function that establishes the connection to the MQTT broker
 {
@@ -197,22 +207,57 @@ void callback(char* topic, byte* payload, unsigned int length) // This function 
   analogWrite(motorA_enable, motorA_speed);      // Set the speed of motor A
   analogWrite(motorB_enable, motorB_speed);      // Set the speed of motor B
 
-  // Serial.println(motorA_direction);
-  // Serial.println(motorA_speed);
-  // Serial.println(motorB_direction);
-  // Serial.println(motorB_speed);
+  Serial.print(motorA_direction); Serial.print(" ");
+  Serial.print(motorA_speed); Serial.print(" ");
+  Serial.print(motorB_direction); Serial.print(" ");
+  Serial.print(motorB_speed); Serial.println(" ");
 }
 
-void led_analog_control (int r, int g, int b)
+
+void read_battery()  // This function reads and stores the battery level
 {
-  analogWrite(rgb_R,1023-r);
+  analogReadOut = analogRead(analogPin);                     // Read the analog pin to determine battery level
+  // Serial.println(analogReadOut);
+  battery_percentage = map(analogReadOut,550,800,0,100);     // These values need to be adjusted for accurate voltage level reading
+  battery_percentage = constrain(battery_percentage,0,100);  // Constrain the percentage reading because the map function won't constrain
+}
+
+
+/*
+ * This function provide easy control of the RGB Led to generate any color - 10 bit
+ *  - r (int) - density of the color RED
+ *  - g (int) - density of the color GREEN
+ *  - b (int) - density of the color BLUE 
+ *
+ * Usage;
+ *   led_analog_control(1023, 1023, 1023);  // White
+ *   led_analog_control(1023, 0, 0);        // Red
+ *   led_analog_control(0, 1023, 1023);     // Cyan
+ *   led_analog_control(1023, 1023, 1023);  // White
+ *   led_analog_control(1023, 0, 1023);     // Magenta
+ *   
+ */
+void led_analog_control(int r, int g, int b)  
+{
+  analogWrite(rgb_R,1023-r);  // 0 = full brightness
   analogWrite(rgb_G,1023-g);
   analogWrite(rgb_B,1023-b);
 }
 
-void led_blink (char color, int amount, int interval)
+
+/*
+ * This function is used to blink in any of the three colors of the RGB Led.
+ *  - color (char) - the color preference - 'R','G' or 'B'
+ *  - amount (int) - the amount of blinks
+ *  - interval (int) - the delay amount for blink in ms
+ * 
+ * Usage;
+ *   led_blink ('B', 10, 100);  // Blink in blue 10 times with 100 ms intervals
+ *  
+ */
+void led_blink(char color, int amount, int interval)
 {
-	int led;
+  int led;
   switch (color)
   {
     case 'R':
@@ -229,9 +274,9 @@ void led_blink (char color, int amount, int interval)
   {  
     for (int i=0; i<amount; i++)
     {
-      digitalWrite(led, LOW);
+      digitalWrite(led, LOW);  // Turn on the LED
       delay(interval);
-      digitalWrite(led, HIGH);
+      digitalWrite(led, HIGH);  // Turn off the LED
     }
   }
   else
