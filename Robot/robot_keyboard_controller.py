@@ -3,13 +3,12 @@
 from pynput import keyboard
 import paho.mqtt.client as mqtt
 import time
-import time
 
-# clear = lambda: os.system('clear')  # Function to clear the console
 
-broker_IP = "192.168.1.107"  # Broker IP Address
+# Adjust these according to your setup;
+broker_IP = "192.168.1.107"            # Broker IP Address
 client_name = "mqtt_robot_controller"  # Client ID for this controller
-topic_pub = "me462_robot_1_control"  # Topic to publish to
+topic_pub = "me462_robot_1_control"    # Topic to publish to
 
 message = list("150150")  # Message to be sent to the robot - Must be mutable
 motor_speed = 50  # Speed of the motors - 00 to 99 - Variable
@@ -21,7 +20,7 @@ try:  # Try to connect to the MQTT broker
     print("Broker connection is established. Press ESC to terminate the controller")
 except:
     print("Broker connection failure! \nPlease check MQTT parameters")
-    time.sleep(3)
+    time.sleep(2)
     exit()
 
 
@@ -55,7 +54,7 @@ def turn_right():
 
 def speed_up():
     global motor_speed
-    if motor_speed == 100:
+    if motor_speed == 90:
         print("Max Speed is Reached")
         return
     motor_speed += 10  # Increase the speed pwm by 10 percent
@@ -64,7 +63,6 @@ def speed_up():
     message[2] = str(motor_speed)[1]
     message[4] = str(motor_speed)[0]
     message[5] = str(motor_speed)[1]
-    client.publish(topic_pub, "".join(message))  # The message is converted to string and then published.
 
 
 def slow_down():
@@ -78,7 +76,6 @@ def slow_down():
     message[2] = str(motor_speed)[1]
     message[4] = str(motor_speed)[0]
     message[5] = str(motor_speed)[1]
-    client.publish(topic_pub, "".join(message))  # The message is converted to string and then published.
 
 
 robot_functions = {
@@ -93,14 +90,16 @@ robot_functions = {
 
 def on_press(key):  # The function that runs when a key is pressed
     if key == keyboard.Key.esc:  # Stop listener if ESC is pressed
+        print("---EXIT---")
+        time.sleep(1)
         return False
     try:
         robot_functions[key]()  # Run the specific function according to the pressed key
     except:
         print("INVALID KEY")
         pass
-    print("message: "+"".join(message))
-    print("\n")
+    print("message: "+"".join(message)+"\n")
+
 
 def on_release(key):  # The function that runs when a key is released
     client.publish(topic_pub, "000000")  # Stop the robot when the key is released.
