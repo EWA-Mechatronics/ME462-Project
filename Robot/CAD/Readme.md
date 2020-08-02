@@ -1,2 +1,3 @@
-STL files to be 3D printed are stored [here](https://1drv.ms/f/s!Arem1XXoJyzUiFp-QYNcdRTxZSS8) at the moment.  
-Assembly video is available [here](https://youtu.be/MCAMUArBRuI).
+STL files to be 3D printed and the assembly video is available.  
+![render1.png](render1.png)  
+![render2.png](render2.png)
