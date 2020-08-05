@@ -1,3 +1,6 @@
+'''
+This controller code created by world_creator_v1.2.py
+'''
 import json
 from pathlib import Path
 from controller import *
